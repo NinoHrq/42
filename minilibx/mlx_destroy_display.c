@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   mlx_destroy_display.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mg <mg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/07 12:50:25 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/06/11 10:20:23 by nharraqi         ###   ########.fr       */
+/*   Created: 2020/10/03 18:56:35 by mg                #+#    #+#             */
+/*   Updated: 2020/10/04 01:55:35 by mg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "mlx_int.h"
 
-int	ft_putstr(char *s)
+int	mlx_destroy_display(t_xvar *xvar)
 {
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	if (!s)
-		return (write(1, "(null)", 6));
-	while (s[i])
-	{
-		write(1, &s[i], 1);
-		i++;
-		count++;
-	}
-	return (count);
+	XCloseDisplay(xvar->display);
 }

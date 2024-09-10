@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 15:12:25 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/06/08 17:57:46 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/06/19 13:33:09 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static int	ft_argmts(char type, va_list args)
 		count += ft_printhexa_maj(va_arg(args, int));
 	else if (type == 'x')
 		count += ft_printhexa_min(va_arg(args, int));
+	else
+		return (-1);
 	return (count);
 }
 
@@ -43,13 +45,15 @@ static int	ft_print_parkour(const char *str, va_list args)
 	leng = 0;
 	while (str[i])
 	{
+		if (str[i] == '%' && str[i + 1] == '\0')
+			return (-1);
 		if (str[i] == '%' && str[i + 1])
 		{
 			i++;
-			if (ft_strchr("cspdiuxX", str[i]))
+			if (str[i] == '%')
+				leng += ft_putchar('%');
+			else if (ft_strchr("cspdiuxX", str[i]))
 				leng += ft_argmts(str[i], args);
-			else if (str[i] == '%' && str[i + 1] == '%')
-				leng += ft_putchar(str[i]);
 		}
 		else
 			leng += ft_putchar(str[i]);
@@ -63,6 +67,8 @@ int	ft_printf(const char *str, ...)
 	va_list	args;
 	int		len;
 
+	if (!str)
+		return (-1);
 	va_start(args, str);
 	len = ft_print_parkour(str, args);
 	va_end(args);

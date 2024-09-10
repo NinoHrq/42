@@ -6,15 +6,21 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 14:27:35 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/06/04 11:33:23 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:13:36 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+# include <fcntl.h>
 # include <stddef.h>
 # include <stdlib.h>
+# include <string.h>
 # include <unistd.h>
+//# include <stdio.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 // fonctions int
 int					ft_atoi(const char *str);
@@ -40,6 +46,9 @@ char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(const char *s, char c);
 char				*ft_itoa(int n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
+char				*get_next_line(int fd);
+char				*fill_line_buffer(int fd, char *save, char *buffer);
+char				*set_line(char *line_buffer);
 
 // fonctions void
 void				ft_bzero(void *s, size_t n);
@@ -63,7 +72,7 @@ typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
-}					t_list;
+}	t_list;
 
 // fonctions t_list
 t_list				*ft_lstnew(void *content);

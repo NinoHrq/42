@@ -6,25 +6,19 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 15:49:50 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/06/08 15:41:35 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/06/11 12:26:33 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_strlen(int nb)
+int	ft_printhexa_maj(unsigned int c)
 {
-	int	i;
+	char	*base;
+	int		count;
 
-	i = 0;
-	while (nb[i])
-		i++;
-	return (i);
-}
-
-int	ft_printhexa_maj(int c, char *base)
-{
+	count = 0;
 	base = "0123456789ABCDEF";
-	ft_putnbr_base(c, base);
-	return (ft_strlen(c));
+	count += ft_putnbr_base(c, base);
+	return (count);
 }

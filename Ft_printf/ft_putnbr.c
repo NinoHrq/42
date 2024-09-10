@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 15:38:25 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/06/07 17:57:08 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/06/11 12:19:36 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_putnbr(int n)
 	}
 	if (nb > 9)
 	{
-		ft_putnbr(nb / 10);
+		count += ft_putnbr(nb / 10);
 	}
 	digit = nb % 10 + '0';
 	write(1, &digit, 1);
