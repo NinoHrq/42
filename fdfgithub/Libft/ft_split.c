@@ -6,90 +6,88 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 11:31:34 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/09/14 17:09:36 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/09/14 17:00:03 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 
-static void	free_tab(char **tab);
+#include "libft.h"
 
 static int count_words(const char *str, char sep)
 {
-	int	i;
-	int	count;
+    int i = 0;
+    int count = 0;
 
-	i = 0;
-	count = 0;
-	while (str[i] != '\0')
-	{
-		while (str[i] == sep && str[i] != '\0')
-			i++;
-		if (str[i] != sep && str[i] != '\0')
-			count++;
-		while (str[i] != sep && str[i] != '\0')
-			i++;
-	}
-	return (count);
+    while (str[i] != '\0')
+    {
+        while (str[i] == sep && str[i] != '\0')
+            i++;
+        if (str[i] != sep && str[i] != '\0')
+            count++;
+        while (str[i] != sep && str[i] != '\0')
+            i++;
+    }
+    return count;
 }
 
-static char	**tableau(const char *str, char sep, int leng)
-{
-	char	**tab;
-	int		i;
-	int		j;
-	int		k;
-	int		m;
 
-	i = 0;
-	j = 0;
-	tab = malloc(sizeof(char *) * (leng + 1));
-	if (!tab)
-		return (NULL);
-	while (str[i] != '\0' && j < leng)
-	{
-		while (str[i] != '\0' && str[i] == sep)
-			i++;
-		k = i;
-		while (str[k] != '\0' && str[k] != sep)
-			k++;
-		tab[j] = malloc(sizeof(char) * (k - i + 1));
-		if (!tab[j])
-		{
-			free_tab(tab); // Libère toute la mémoire déjà allouée
-			return (NULL);
-		}
-		m = 0;
-		while (i < k)
-			tab[j][m++] = str[i++];
-		tab[j][m] = '\0';
-		j++;
-	}
-	tab[j] = NULL;
-	return (tab); // Ne pas libérer ici
+static char **tableau(const char *str, char sep, int leng)
+{
+    char **tab;
+    int i = 0;
+    int j = 0;
+    int k;
+    int m;
+
+    tab = malloc(sizeof(char *) * (leng + 1));
+    if (!tab)
+        return NULL;
+
+    while (str[i] != '\0' && j < leng)
+    {
+        while (str[i] != '\0' && str[i] == sep)
+            i++;
+        k = i;
+        while (str[k] != '\0' && str[k] != sep)
+            k++;
+        tab[j] = malloc(sizeof(char) * (k - i + 1));
+        if (!tab[j])
+        {
+            free_tab(tab);  // Libère toute la mémoire déjà allouée
+            return NULL;
+        }
+        m = 0;
+        while (i < k)
+            tab[j][m++] = str[i++];
+        tab[j][m] = '\0';
+        j++;
+    }
+    tab[j] = NULL;
+    return tab;  // Ne pas libérer ici
 }
 
-static void	free_tab(char **tab)
+void free_tab(char **tab)
 {
-	int	i;
+    int i = 0;
 
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
+    while (tab[i])
+    {
+        free(tab[i]);
+        i++;
+    }
+    free(tab);
 }
 
-char	**ft_split(const char *s, char c)
-{
-	char	**dest;
-	int		leng;
 
-	if (!s)
-		return (NULL);
-	leng = count_words(s, c);
-	dest = tableau(s, c, leng);
-	return (dest);
+char **ft_split(const char *st, char sep)
+{
+    char **dest;
+    int leng;
+
+    if (!st)
+        return NULL;
+
+    leng = count_words(st, sep);
+    dest = tableau(st, sep, leng);
+    return dest;
 }

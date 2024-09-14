@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 14:27:35 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/09/13 21:13:44 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:49:24 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,10 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
+void				free_tab(char **tab);
 
-// fonctions size_t
-size_t				ft_strlen(const char *str);
+	// fonctions size_t
+	size_t ft_strlen(const char *str);
 size_t				ft_strlcpy(char *dst, const char *src, size_t n);
 size_t				ft_strlcat(char *dst, const char *src, size_t sized);
 
@@ -72,7 +73,7 @@ typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
-}	t_list;
+}					t_list;
 
 // fonctions t_list
 t_list				*ft_lstnew(void *content);

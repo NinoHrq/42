@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:10:26 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/09/13 18:40:55 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:50:36 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	horizon_draw(t_draw *dr, coord *env)
 	dr->offset_y = (HAUTEUR - (env->ymax * 20)) / 2;
 	dr->scl_z = scale(env);
 	dr->z1 = env->final_tab[dr->y][dr->x + 1] * dr->scl_z;
-	dr->x1 = (dr->x + 1) * scale_x(dr) + dr->offset_y;
+	dr->x1 = (dr->x + 1) * scale_x(dr) + dr->offset_x;
 	dr->y1 = (dr->y * scale_y(dr) - env->final_tab[dr->y][dr->x + 1]) + dr->offset_y;
 	iso_draw(&dr->x1, &dr->y1, dr->z1);
 	bresenham(dr);
