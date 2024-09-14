@@ -6,12 +6,12 @@
 #    By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/25 15:05:35 by nharraqi          #+#    #+#              #
-#    Updated: 2024/08/21 19:31:48 by nharraqi         ###   ########.fr        #
+#    Updated: 2024/09/13 22:30:40 by nharraqi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME    = libft.a
-CFLAGS    = -Wall -Wextra -Werror
+CFLAGS    = -Wall -Wextra -Werror -fPIE
 OBJS    = ft_isalpha.o ft_isdigit.o ft_isalnum.o ft_isascii.o ft_isprint.o \
     ft_strlen.o ft_toupper.o ft_tolower.o ft_strlcpy.o ft_strlcat.o ft_strncmp.o \
     ft_atoi.o ft_strchr.o ft_strrchr.o ft_strnstr.o ft_memcmp.o ft_memchr.o ft_memset.o \
