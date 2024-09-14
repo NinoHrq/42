@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 18:21:06 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/09/10 14:17:19 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/09/13 22:41:15 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,23 @@ void	map_mesure(coord *env, char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		signal("probleme fd !(map_mesure)");
+		ft_putendl_fd("probleme fd (map_mesure)", 1);
 	line = get_next_line(fd);
-	if (line !)
-		signal("probleme line = gnl(map_mesure)");
-	tab = ft_split(line, " ");
+	if (!line)
+		ft_putendl_fd("probleme line = gnl(map_mesure)", 1);
+	tab = ft_split(line, ' ');
 	while (tab[env->xmax])
-		(free(tab[env->xmax]); env->xmax++;) while (line)(free(line); env->ymax++; line = get_next_line(fd);) free(line);
+	{
+		free(tab[env->xmax]);
+		env->xmax++;
+	}
+	while (line)
+	{
+		free(line);
+		env->ymax++;
+		line = get_next_line(fd);
+	}
+	free(line);
 	free(tab);
 	close(fd);
 }
@@ -40,14 +50,13 @@ void	check_matrice(coord *env, char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		signal("probleme fd !(map_matrice)");
+		ft_putendl_fd("probleme fd (check_matrice)", 1);
 	line = get_next_line(fd);
-	if (line !)
-		signal("probleme line = gnl(map_matrice)");
+	if (!line)
+		ft_putendl_fd("probleme line = gnl(check_matrice)", 1);
 	while (line)
-		;
 	{
-		tab = ft_split(line, " ");
+		tab = ft_split(line, ' ');
 		free(line);
 		i = 0;
 		while (tab[i])
@@ -57,7 +66,8 @@ void	check_matrice(coord *env, char *file)
 		}
 		free(tab);
 		if (i < env->xmax || i > env->xmax)
-			signal("pas le meme nombre d'element par ligne! (check_matrice)");
+			ft_putendl_fd("pas le meme nombre d'element par ligne! (check_matrice)",
+				1);
 		line = get_next_line(fd);
 	}
 	free(line);
@@ -71,15 +81,14 @@ void	put_mat_in_tab(coord *env, char *file)
 	char **line_tab;
 
 	fd = open(file, O_RDONLY);
-	if (fd < 0)
 	env->final_tab = malloc(env->ymax * sizeof(int *));
 	if (!env->final_tab)
-		signal("probleme final_tab malloc(put_mat_in_tab)");
+		ft_putendl_fd("probleme final_tab malloc(put_mat_in_tab)", 1);
 	while (env->y < env->ymax)
 	{
 		env->final_tab[env->y] = malloc(env->xmax * sizeof(int));
 		if (!env->final_tab[env->y])
-			signal("probleme final_tab[env->y] malloc(put_mat_in_tab)");
+			ft_putendl_fd("probleme final_tab[env->y] malloc(put_mat_in_tab)",1);
 		line = get_next_line(fd);
 		line_tab = ft_split(line, ' ');
 		free(line);
