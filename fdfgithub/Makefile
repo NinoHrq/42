@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS    = start.c draw.c bresenham.c fdfmain.c scale.c
+SRCS    = start.c draw.c hooks.c fdfmain.c scale.c
 OBJS    = $(SRCS:.c=.o)
 NAME    = fdf
 CC      = gcc -g
