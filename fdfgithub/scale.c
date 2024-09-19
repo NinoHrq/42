@@ -17,8 +17,8 @@ void	ddd_point(t_env *env)
 	int	i;
 
 	i = 0;
-	env->initial_points = malloc(env->ymax * env->xmax * (sizeof(t_ipoint)));
-	if (!env->initial_points)
+	env->init_pts = malloc(env->ymax * env->xmax * (sizeof(t_ipoint)));
+	if (!env->init_pts)
 		ft_printf("Malloc failed");
 	env->y = 0;
 	while (env->y < env->ymax)
@@ -26,7 +26,7 @@ void	ddd_point(t_env *env)
 		env->x = 0;
 		while (env->x < env->xmax)
 		{
-			env->initial_points[i] = (t_ipoint){env->x, env->y, \
+			env->init_pts[i] = (t_ipoint){env->x, env->y, \
 								env->final_tab[env->y][env->x]};
 			i++;
 			env->x++;
@@ -42,23 +42,23 @@ void	dd_point(t_env *env)
 	int	i;
 
 	i = 0;
-	env->final_points = malloc(env->ymax * env->xmax * (sizeof(t_fpoint)));
-	if (!env->final_points)
+	env->final_pts = malloc(env->ymax * env->xmax * (sizeof(t_fpoint)));
+	if (!env->final_pts)
 		ft_printf("Malloc failed");
 	while (i < (env->xmax * env->ymax))
 	{
-		env->final_points[i].y = env->initial_points[i].y \
-				* cosf(ANGLE) + env->initial_points[i].y \
+		env->final_pts[i].y = env->init_pts[i].y \
+				* cosf(ANGLE) + env->init_pts[i].y \
 				* cosf(ANGLE + 2) \
-				+ (env->initial_points[i].z * env->altitude) \
+				+ (env->init_pts[i].z * env->altitude) \
 				* cosf(ANGLE - 2);
-		env->final_points[i].x = env->initial_points[i].x \
-				* sinf(ANGLE) + env->initial_points[i].y \
+		env->final_pts[i].x = env->init_pts[i].x \
+				* sinf(ANGLE) + env->init_pts[i].y \
 				* sinf(ANGLE + 2) \
-				+ (env->initial_points[i].z * env->altitude) \
+				+ (env->init_pts[i].z * env->altitude) \
 				* sinf(ANGLE - 2);
-		env->final_points[i].x *= -env->scale;
-		env->final_points[i].y *= env->scale;
+		env->final_pts[i].x *= -env->scale;
+		env->final_pts[i].y *= env->scale;
 		i++;
 	}
 }
