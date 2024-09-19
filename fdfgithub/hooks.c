@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-void	h_management(t_env *env)
+void	hooks_managemt(t_env *env)
 {
 	mlx_key_hook(env->mlx->win, key_handler, env);
 	mlx_hook(env->mlx->win, 17, 0, close_win, env);
