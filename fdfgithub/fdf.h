@@ -49,16 +49,12 @@ typedef struct s_fpoint {
 	float	y;
 }	t_fpoint;
 
-typedef struct s_delta {
-	float	dx;
-	float	dy;
-}	t_delta;
-
-
 typedef struct coordinates
 {
 	int						x;
 	int						y;
+	int						dx;
+	int						dy;
 	int						xmax;
 	int						ymax;
 	int						**final_tab;
