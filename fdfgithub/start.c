@@ -106,7 +106,7 @@ int ft_init(coord *env, t_mlx *mlx)
 	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->size_line,
 			&mlx->endian);
 	dd_points(env);
-	hooks_managemt(env)
+	hooks_managemt(env);
 	mlx_loop_hook(mlx, render(env), env);
 	mlx_loop(mlx.mlx);
 	return (0);
