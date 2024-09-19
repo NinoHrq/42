@@ -19,15 +19,41 @@
 # include <stdlib.h>
 
 # define ANGLE 7.37
-# define SCL_HAUTEUR 900
-# define SCL_LARGEUR 900
 # define LARGEUR 1980
 # define HAUTEUR 1080
+# define ZOOM 1.1
+
+# define SHELL_RED "\033[0;31m"
+# define SHELL_YELLOW "\033[0;33m"
+# define SHELL_END_COLOR "\033[m"
+# define TEXT_COLOR 0x1A1A1D
+# define BACKGROUND 0x1A1A1D
+# define MENU_BACKGROUND 0x950740
+# define BLACK 0x000000
+# define WHITE 0xFFFFFF
+# define RED 0xFF0000
 
 typedef struct coordinates	coord;
 typedef struct bresenham	t_bre;
 typedef struct draw			t_draw;
 typedef struct mlx			t_mlx;
+
+typedef struct s_ipoint {
+	int	x;
+	int	y;
+	int	z;
+}	t_ipoint;
+
+typedef struct s_fpoint {
+	float	x;
+	float	y;
+}	t_fpoint;
+
+typedef struct s_delta {
+	float	dx;
+	float	dy;
+}	t_delta;
+
 
 typedef struct coordinates
 {
@@ -36,6 +62,8 @@ typedef struct coordinates
 	int						xmax;
 	int						ymax;
 	int						**final_tab;
+	t_ipoint					*init_pts;
+	t_fpoint					*final_pts;
 	t_bre						*bre;
 	t_mlx						*mlx;
 	t_draw						*dr;
