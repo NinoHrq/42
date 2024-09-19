@@ -24,7 +24,9 @@
 # define ZOOM 1.1
 # define TRANS 1
 # define SCALE 30
-# define ALTITUDE 1
+# define ALTITUDE 0.1
+# define TRANS_X 10
+# define TRANS_Y 5
 
 # define SHELL_RED "\033[0;31m"
 # define SHELL_YELLOW "\033[0;33m"
