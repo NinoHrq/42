@@ -12,38 +12,53 @@
 
 #include "fdf.h"
 
-double	scale(coord *env)
+void	three_dim_point(t_env *env)
 {
-	double	diffz;
+	int	i;
 
-	diffz = (double)HAUTEUR / (env->ymax + env->xmax);
-	return (diffz);
-}
-
-double	scale_x(t_draw *dr)
-{
-	dr->scl_x = (double)SCL_LARGEUR / 40;
-	return (dr->scl_x);
-}
-
-double	scale_y(t_draw *dr)
-{
-	dr->scl_y = (double)SCL_HAUTEUR / 40;
-	return (dr->scl_y);
-}
-
-void	define_env(coord *env)
-{
-	env->xmax = 0;
-	env->ymax = 0;
-	env->x = 0;
+	i = 0;
+	env->initial_points = malloc(env->ymax * env->xmax * (sizeof(t_ipoint)));
+	if (!env->initial_points)
+		ft_printf("Malloc failed");
 	env->y = 0;
-	env->final_tab = NULL;
+	while (env->y < env->ymax)
+	{
+		env->x = 0;
+		while (env->x < env->xmax)
+		{
+			env->initial_points[i] = (t_ipoint){env->x, env->y, \
+								env->final_tab[env->y][env->x]};
+			i++;
+			env->x++;
+		}
+		env->y++;
+	}
+	free_final_tab(env);
 }
-void	define_draw(t_draw *dr)
+
+/*Fill in the two-dimensional table*/
+void	two_dim_point(t_env *env)
 {
-	dr->x0 = 0;
-	dr->y0 = 0;
-	dr->x1 = 0;
-	dr->y1 = 0;
+	int	i;
+
+	i = 0;
+	env->final_points = malloc(env->ymax * env->xmax * (sizeof(t_fpoint)));
+	if (!env->final_points)
+		ft_printf("Malloc failed");
+	while (i < (env->xmax * env->ymax))
+	{
+		env->final_points[i].y = env->initial_points[i].y \
+				* cosf(ANGLE) + env->initial_points[i].y \
+				* cosf(ANGLE + 2) \
+				+ (env->initial_points[i].z * env->altitude) \
+				* cosf(ANGLE - 2);
+		env->final_points[i].x = env->initial_points[i].x \
+				* sinf(ANGLE) + env->initial_points[i].y \
+				* sinf(ANGLE + 2) \
+				+ (env->initial_points[i].z * env->altitude) \
+				* sinf(ANGLE - 2);
+		env->final_points[i].x *= -env->scale;
+		env->final_points[i].y *= env->scale;
+		i++;
+	}
 }
