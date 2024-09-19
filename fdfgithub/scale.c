@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	three_dim_point(t_env *env)
+void	ddd_point(t_env *env)
 {
 	int	i;
 
@@ -37,7 +37,7 @@ void	three_dim_point(t_env *env)
 }
 
 /*Fill in the two-dimensional table*/
-void	two_dim_point(t_env *env)
+void	dd_point(t_env *env)
 {
 	int	i;
 
