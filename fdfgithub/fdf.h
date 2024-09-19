@@ -28,20 +28,12 @@
 # define TRANS_X 10
 # define TRANS_Y 5
 
-# define SHELL_RED "\033[0;31m"
-# define SHELL_YELLOW "\033[0;33m"
-# define SHELL_END_COLOR "\033[m"
-# define TEXT_COLOR 0x1A1A1D
-# define BACKGROUND 0x1A1A1D
-# define MENU_BACKGROUND 0x950740
 # define BLACK 0x000000
 # define WHITE 0xFFFFFF
 # define RED 0xFF0000
 
 typedef struct coordinates	coord;
-typedef struct bresenham	t_bre;
-typedef struct draw			t_draw;
-typedef struct mlx			t_mlx;
+typedef struct mlx		t_mlx;
 
 typedef struct s_ipoint {
 	int	x;
@@ -62,44 +54,14 @@ typedef struct coordinates
 	int						dy;
 	int						xmax;
 	int						ymax;
+	int						scale;
+	int						translation;
+	float						altitude;
 	int						**final_tab;
 	t_ipoint					*init_pts;
 	t_fpoint					*final_pts;
-	t_bre						*bre;
 	t_mlx						*mlx;
-	t_draw						*dr;
 }							coord;
-
-typedef struct bresenham
-{
-	int						dx;
-	int						dy;
-	int						sx;
-	int						sy;
-	int						error;
-	int						e2;
-}							t_bre;
-
-typedef struct draw
-{
-	int						x;
-	int						y;
-	int						x0;
-	int						y0;
-	int						z0;
-	int						x1;
-	int						y1;
-	int						z1;
-	int						offset_x;
-	int						offset_y;
-	int						color;
-	double					scl_x;
-	double					scl_y;
-	double					scl_z;
-	coord					*env;
-	t_bre					*bre;
-	t_mlx					*mlx;
-}							t_draw;
 
 typedef struct mlx
 {
@@ -111,34 +73,30 @@ typedef struct mlx
 	int						size_line;
 	char					*addr;
 	int						endian;
-	t_draw					*dr;
 	coord					*env;
 }							t_mlx;
 // start.c
 void						map_mesure(coord *env, char *file);
 void						check_matrice(coord *env, char *file);
 void						put_mat_in_tab(coord *env, char *file);
+int 						ft_init(coord *env, t_mlx *mlx);
+int						render(t_env *env);
 
 // fdfmain.c
-int							signal(char *message);
+void						free_final_tab(t_env	*env);
 
 // draw.c
-void						horizon_draw(t_draw *dr, coord *env);
-void						verti_draw(t_draw *dr, coord *env);
-void						iso_draw(int *x, int *y, int z);
-void						calcul_draw(t_draw *dr, coord *env);
-void						lines_draw(t_draw *dr, coord *env);
+void						put_pixel(t_env *env, int x, int y, int color);
+void						draw_line(t_env *env, t_fpoint point0, t_fpoint point1);
+void						draw_background(t_env *env);
 
 // scale.c
-double						scale(coord *env);
-double						scale_x(t_draw *dr);
-double						scale_y(t_draw *dr);
-void						define_env(coord *env);
-void						define_draw(t_draw *dr);
+void						ddd_point(t_env *env);
+void						dd_point(t_env *env);
 
-// bresenham.c
-void 						lilbres(t_bre *bre, t_draw *dr);
-void						draw_pixel(t_mlx *mlx, int x, int y, int color);
-void						bresenham(t_draw *dr);
-
+//hooks.c
+void						hooks_managemt(t_env *env);
+int						key_handler(int key, t_env *env);
+int						close_win(t_mlx *mlx);
+int						mouse_handler(int mousecode, int x, int y, t_env *env);
 #endif
