@@ -49,11 +49,7 @@ void	check_matrice(coord *env, char *file)
 	char	**tab;
 
 	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		ft_putendl_fd("probleme fd (check_matrice)", 1);
 	line = get_next_line(fd);
-	if (!line)
-		ft_putendl_fd("probleme line = gnl(check_matrice)", 1);
 	while (line)
 	{
 		tab = ft_split(line, ' ');
@@ -66,8 +62,7 @@ void	check_matrice(coord *env, char *file)
 		}
 		free(tab);
 		if (i < env->xmax || i > env->xmax)
-			ft_putendl_fd("pas le meme nombre d'element par ligne! (check_matrice)",
-				1);
+			ft_putendl_fd("pas le meme nombre d'element par ligne! (check_matrice)", 1);
 		line = get_next_line(fd);
 	}
 	free(line);
@@ -101,4 +96,26 @@ void	put_mat_in_tab(coord *env, char *file)
 		env->y++;
 		free(line_tab);
 	}
+}
+
+int ft_init(coord *env, t_mlx *mlx)
+{
+	mlx->mlx = mlx_init();
+	mlx->win = mlx_new_window(mlx->mlx, LARGEUR, HAUTEUR, "Fils De Flute");
+	mlx->img = mlx_new_image(mlx->mlx, LARGEUR, HAUTEUR);
+	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->size_line,
+			&mlx->endian);
+	dd_points(env);
+	hooks_managemt(env)
+	mlx_loop_hook(mlx, render(env), env);
+	mlx_loop(mlx.mlx);
+	return (0);
+}
+
+int	render(t_env *env)
+{
+	draw_background(env);
+	dd_point(env);
+	mlx_put_image_to_window(env->mlx->mlx, env->mlx->win, env->mlx->img, 0, 0);
+	return (0);
 }
