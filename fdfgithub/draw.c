@@ -12,72 +12,64 @@
 
 #include "fdf.h"
 
-void	horizon_draw(t_draw *dr, coord *env);
-void	verti_draw(t_draw *dr, coord *env);
-
-void	iso_draw(int *x, int *y, int z)
+//draw pixel
+void	put_pixel(t_env *env, int x, int y, int color)
 {
-	int	tmp_x;
-	int	tmp_y;
-
-	tmp_x = *x;
-	tmp_y = *y;
-	*x = (tmp_x - tmp_y) * cos(ANGLE);
-	*y = (((tmp_x + tmp_y) * sin(ANGLE)) - z);
-}
-
-void	calcul_draw(t_draw *dr, coord *env)
-{
-	dr->scl_z = scale(env);
-	dr->y = 0;
-	dr->offset_x = (int)LARGEUR / 2;
-	dr->offset_y = (int)HAUTEUR / 2;
-	while (dr->y < env->ymax)
+	char	*pxl;
+	if (x >= 0 && x < LARGEUR && y >= 0 && y < HAUTEUR)
 	{
-		dr->x = 0;
-		while (dr->x < env->xmax)
-		{
-			dr->z0 = env->final_tab[dr->y][dr->x] * dr->scl_z;
-			dr->x0 = dr->x * scale_x(dr) + dr->offset_x;
-			dr->y0 = dr->y * scale_y(dr) - env->final_tab[dr->y][dr->x]
-				+ dr->offset_y;
-			iso_draw(&dr->x0, &dr->y0, dr->z0);
-			if (dr->x + 1 < env->xmax)
-				horizon_draw(dr, env);
-			if (dr->y + 1 < env->ymax)
-				verti_draw(dr, env);
-			dr->x++;
-		}
-		dr->y++;
+		pxl = env->addr + (y * env->mlx->line_length + \
+						x * (env->mlx->bits_per_pixel / 8));
+		(unsigned int *)pxl = color;
 	}
 }
 
-void	verti_draw(t_draw *dr, coord *env)
+/*Line generation algorithm*/
+/*DDA Line Drawing Algorithm*/
+void	draw_line(t_env *env, t_fpoint point0, t_fpoint point1)
 {
-	dr->offset_x = (LARGEUR - (env->xmax * 20)) / 2;
-	dr->offset_y = (HAUTEUR - (env->ymax * 20)) / 2;
-	dr->scl_z = scale(env);
-	dr->z1 = env->final_tab[dr->y + 1][dr->x] * dr->scl_z;
-	dr->x1 = dr->x * scale_x(dr) + dr->offset_x;
-	dr->y1 = ((dr->y + 1) * scale_y(dr) - env->final_tab[dr->y + 1][dr->x]) + dr->offset_y;
-	iso_draw(&dr->x1, &dr->y1, dr->z1);
-	bresenham(dr);
+	float	step;
+	float	x;
+	float	y;
+	int		i;
+
+	i = 0;
+	env.dx = point1.x - point0.x;
+	env.dy = point1.y - point0.y;
+	if (fabsf(env.dx) >= fabsf(env.dy))
+		step = fabsf(env.dx);
+	else
+		step = fabsf(env.dy);
+	env.dx = env.dx / step;
+	env.dy = env.dy / step;
+	x = point0.x;
+	y = point0.y;
+	while (i < step)
+	{
+		put_pixel(env, -x + LARGEUR / 2 + TRANS, \
+		-y + HAUTEUR / 2 + TRANS, RED);
+		x = x + env.dx;
+		y = y + env.dy;
+		i++;
+	}
 }
 
-void	horizon_draw(t_draw *dr, coord *env)
+/*draw background for the bonus*/
+void	draw_background(t_env *env)
 {
-	dr->offset_x = (LARGEUR - (env->xmax * 20)) / 2;
-	dr->offset_y = (HAUTEUR - (env->ymax * 20)) / 2;
-	dr->scl_z = scale(env);
-	dr->z1 = env->final_tab[dr->y][dr->x + 1] * dr->scl_z;
-	dr->x1 = (dr->x + 1) * scale_x(dr) + dr->offset_x;
-	dr->y1 = (dr->y * scale_y(dr) - env->final_tab[dr->y][dr->x + 1]) + dr->offset_y;
-	iso_draw(&dr->x1, &dr->y1, dr->z1);
-	bresenham(dr);
-}
+	int	h;
+	int	w;
 
-void	lines_draw(t_draw *dr, coord *env)
-{
-	calcul_draw(dr, env);
-	ft_putendl_fd("Dessin completement complet!", 1);
+	h = 0;
+	w = 0;
+	while (h <= HAUTEUR)
+	{
+		w = 0;
+		while (w <= LARGEUR)
+		{
+			put_pixel(env, w, h, BLACK);
+			w++;
+		}
+		h++;
+	}
 }
