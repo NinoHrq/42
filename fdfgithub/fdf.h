@@ -22,6 +22,9 @@
 # define LARGEUR 1980
 # define HAUTEUR 1080
 # define ZOOM 1.1
+# define TRANS 1
+# define SCALE 30
+# define ALTITUDE 1
 
 # define SHELL_RED "\033[0;31m"
 # define SHELL_YELLOW "\033[0;33m"
