@@ -12,49 +12,40 @@
 
 #include "fdf.h"
 
-int	main(int ac, char **av)
+int	main(int argc, char **argv)
 {
-	coord env;
-	t_mlx mlx;
-	t_draw dr;
-
-	if (ac != 2)
+	coord	env;
+	t_mlx	mlx;
+	
+	env.translation = 1;
+	env.scale = 30;
+	env.altitude = 1;
+	env.y = 0;
+	env.ymax = 0;
+	env.xmax = 0;
+	if (argc == 2)
 	{
-		ft_putendl_fd("Usage: ./fdf map_file", 2);
-		return (1);
+		map_mesure(&env, argv[1]);
+		check_matrice(&env, argv[1]);
+		put_mat_in_tab(&env, argv[1]);
+		ddd_point(&env);
+		ft_init(&env, &mlx);
 	}
+	else
+		ft_printf("Wrong number of args");
+	while (1)
+		;
+}
 
-	// Initialiser les structures
-	define_env(&env);
-	define_draw(&dr);
-	map_mesure(&env, av[1]);
-	check_matrice(&env, av[1]);
-	put_mat_in_tab(&env, av[1]);
+void	free_final_tab(t_env	*env)
+{
+	int	y;
 
-	// Initialisation de mlx
-	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_window(mlx.mlx, LARGEUR, HAUTEUR, "FDF");
-	mlx.img = mlx_new_image(mlx.mlx, LARGEUR, HAUTEUR);
-	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bits_per_pixel, &mlx.size_line,
-			&mlx.endian);
-	// Initialiser la structure de dessin
-	dr.mlx = &mlx;
-	dr.env = &env;
-
-	// Dessiner les lignes de la matrice avec Bresenham en vue isométrique
-	lines_draw(&dr, &env);
-	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.img, 0, 0);
-	mlx_loop(mlx.mlx);
-
-	// Libération de la mémoire
-	int i;
-	for (i = 0; i < env.ymax; i++)
+	y = 0;
+	while (y < env->map_h)
 	{
-		free(env.final_tab[i]);
+		free(env->final_tab[y]);
+		y++;
 	}
-	free(env.final_tab);
-	mlx_destroy_image(mlx.mlx, mlx.img);
-	mlx_destroy_window(mlx.mlx, mlx.win);
-
-	return (0);
+	free(env->final_tab);
 }
