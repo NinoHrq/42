@@ -36,6 +36,9 @@ typedef struct coordinates
 	int						xmax;
 	int						ymax;
 	int						**final_tab;
+	t_bre						*bre;
+	t_mlx						*mlx;
+	t_draw						*dr;
 }							coord;
 
 typedef struct bresenham
