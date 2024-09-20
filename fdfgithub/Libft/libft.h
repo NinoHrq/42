@@ -6,13 +6,14 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 14:27:35 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/09/14 20:49:24 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:14:16 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # include <fcntl.h>
+# include <stdarg.h>
 # include <stddef.h>
 # include <stdlib.h>
 # include <string.h>
@@ -21,6 +22,19 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
+
+int					ft_printf(const char *str, ...);
+
+// fonctions printf
+int					ft_putnbr(int n);
+int					ft_putchar(char c);
+int					ft_putnbr_base(unsigned long nbr, char *base);
+int					ft_printhexa_maj(unsigned int c);
+int					ft_printhexa_min(unsigned int c);
+int					ft_ptrhexa(void *ptr);
+int					ft_putnbru(unsigned int n);
+int					ft_printf(const char *str, ...);
+int					ft_putstr(char *s);
 
 // fonctions int
 int					ft_atoi(const char *str);
@@ -64,8 +78,8 @@ void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 void				free_tab(char **tab);
 
-	// fonctions size_t
-	size_t ft_strlen(const char *str);
+// fonctions size_t
+size_t				ft_strlen(const char *str);
 size_t				ft_strlcpy(char *dst, const char *src, size_t n);
 size_t				ft_strlcat(char *dst, const char *src, size_t sized);
 

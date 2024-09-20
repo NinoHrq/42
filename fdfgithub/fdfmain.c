@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 19:01:46 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/09/14 19:41:06 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/09/20 18:00:46 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ int	main(int argc, char **argv)
 {
 	coord	env;
 	t_mlx	mlx;
-	
+
 	env.translation = 1;
 	env.scale = 30;
 	env.altitude = 1;
+	env.angle = 7.37;
 	env.y = 0;
 	env.ymax = 0;
 	env.xmax = 0;
@@ -32,17 +33,17 @@ int	main(int argc, char **argv)
 		ft_init(&env, &mlx);
 	}
 	else
-		ft_printf("Wrong number of args");
+		ft_printf("ps le nombre d'arguments");
 	while (1)
 		;
 }
 
-void	free_final_tab(t_env	*env)
+void	free_final_tab(coord *env)
 {
-	int	y;
+	int y;
 
 	y = 0;
-	while (y < env->map_h)
+	while (y < env->ymax)
 	{
 		free(env->final_tab[y]);
 		y++;

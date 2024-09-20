@@ -6,11 +6,11 @@
 #    By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/11 15:59:26 by nharraqi          #+#    #+#              #
-#    Updated: 2024/09/13 22:30:33 by nharraqi         ###   ########.fr        #
+#    Updated: 2024/09/20 18:52:08 by nharraqi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS    = start.c draw.c hooks.c fdfmain.c scale.c
+SRCS    = start.c draw.c bresenham.c fdfmain.c scale.c
 OBJS    = $(SRCS:.c=.o)
 NAME    = fdf
 CC      = gcc -g
