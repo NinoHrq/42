@@ -57,7 +57,7 @@ char				*ft_strjoin(const char *s1, const char *s2);
 char				*ft_strnstr(const char *haystack, const char *needle,
 						size_t len);
 char				*ft_strtrim(char const *s1, char const *set);
-char				**ft_split(const char *s, char c);
+char				**ft_split(const char *st, char sep);
 char				*ft_itoa(int n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				*get_next_line(int fd);

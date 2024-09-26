@@ -1,48 +1,37 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/11 15:59:26 by nharraqi          #+#    #+#              #
-#    Updated: 2024/09/20 18:52:08 by nharraqi         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
-SRCS    = start.c draw.c bresenham.c fdfmain.c scale.c
+SRCS    = start.c draw.c main.c scale.c pixel_and_color.c hook.c define.c color.c bresenham.c 
 OBJS    = $(SRCS:.c=.o)
 NAME    = fdf
 CC      = gcc -g
 RM      = rm -f
 CFLAGS  = -Wall -Wextra -Werror -fPIC
-VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all
 
-LDFLAGS = -LLibft -L./minilibx -lft -lmlx -lXext -lX11 -lGL -lm
+LDFLAGS = -LLibft -L./minilibx-linux -lft -lmlx -lXext -lX11 -lGL -lm
 
-INCLUDES = -ILibft -I./minilibx
+INCLUDES = -ILibft -I./minilibx-linux
 
-all: ${NAME}
+all: minilibx-linux ${NAME} 
 
 %.o: %.c
 	${CC} ${CFLAGS} ${INCLUDES} -c $< -o $@
 
 ${NAME}: ${OBJS}
 	@make -C Libft
-	@make -C minilibx
+	@make -C minilibx-linux
 	${CC} ${CFLAGS} ${OBJS} ${LDFLAGS} -o ${NAME}
 
 clean:
 	@make clean -C Libft
-	@make clean -C minilibx
+	@make clean -C minilibx-linux
 	${RM} ${OBJS}
 
 fclean: clean
 	${RM} ${NAME}
 
+minilibx-linux:
+	git clone https://github.com/42Paris/minilibx-linux.git $@
+
 re: fclean all
 
-valgrind: ${NAME}
-	valgrind $(VALGRIND_FLAGS) ./${NAME}
 
-.PHONY: all clean fclean re valgrind Libft minilibx
+.PHONY: all clean fclean re valgrind Libft minilibx-linux
+

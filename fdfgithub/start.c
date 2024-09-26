@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/03 18:21:06 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/09/20 18:39:01 by nharraqi         ###   ########.fr       */
+/*   Created: 2024/09/25 21:31:58 by nharraqi          #+#    #+#             */
+/*   Updated: 2024/09/26 06:26:34 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	map_mesure(coord *env, char *file)
+void	map_mesure(t_cor *env, char *file)
 {
 	int		fd;
 	char	*line;
@@ -20,20 +20,20 @@ void	map_mesure(coord *env, char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		ft_putendl_fd("probleme fd (map_mesure)", 1);
+		error("problm de matrice");
 	line = get_next_line(fd);
 	if (!line)
-		ft_putendl_fd("probleme line = gnl(map_mesure)", 1);
+		error("probleme line = gnl(map_mesure)");
 	tab = ft_split(line, ' ');
-	while (tab[env->xmax])
+	while (tab[env->x_max])
 	{
-		free(tab[env->xmax]);
-		env->xmax++;
+		free(tab[env->x_max]);
+		env->x_max++;
 	}
 	while (line)
 	{
 		free(line);
-		env->ymax++;
+		env->y_max++;
 		line = get_next_line(fd);
 	}
 	free(line);
@@ -41,7 +41,7 @@ void	map_mesure(coord *env, char *file)
 	close(fd);
 }
 
-void	check_matrice(coord *env, char *file)
+void	check_matrice(t_cor *env, char *file)
 {
 	int		i;
 	int		fd;
@@ -61,69 +61,55 @@ void	check_matrice(coord *env, char *file)
 			i++;
 		}
 		free(tab);
-		if (i < env->xmax || i > env->xmax)
-			ft_putendl_fd("pas le meme nombre d'element par ligne! (check_matrice)",
-				1);
+		if (i < env->x_max || i > env->x_max)
+			error("pas le mm nbr d'elemnt / ligne! (check_matrice)");
 		line = get_next_line(fd);
 	}
 	free(line);
 	close(fd);
 }
 
-void	put_mat_in_tab(coord *env, char *file)
+void	put_mat_in_tab(t_cor *env, char *file)
 {
 	int		fd;
 	char	*line;
 	char	**line_tab;
 
 	fd = open(file, O_RDONLY);
-	env->final_tab = malloc(env->ymax * sizeof(int *));
-	if (!env->final_tab)
-		ft_putendl_fd("probleme final_tab malloc(put_mat_in_tab)", 1);
-	while (env->y < env->ymax)
+	env->final_tab = malloc(env->y_max * sizeof(int *));
+	while (env->y < env->y_max)
 	{
-		env->final_tab[env->y] = malloc(env->xmax * sizeof(int));
-		if (!env->final_tab[env->y])
-			ft_putendl_fd("probleme final_tab[env->y] malloc(put_mat_in_tab)",
-				1);
+		env->final_tab[env->y] = malloc(env->x_max * sizeof(int));
 		line = get_next_line(fd);
 		line_tab = ft_split(line, ' ');
 		free(line);
-		env->x = -1;
-		while (++env->x < env->xmax)
+		env->x = 0;
+		while (env->x < env->x_max)
 		{
 			env->final_tab[env->y][env->x] = ft_atoi(line_tab[env->x]);
 			free(line_tab[env->x]);
+			env->x++;
 		}
-		env->y++;
 		free(line_tab);
+		env->y++;
 	}
 }
 
-int	ft_init(coord *env, t_mlx *mlx)
+void	free_all(t_cor *env)
 {
-	t_fpoint point0;
-	t_fpoint point1;
-	
-	point0.x = env->x;
-	point0.y = env->y;
-	mlx->mlx = mlx_init();
-	if (mlx->mlx == NULL)
+	int	y;
+
+	y = 0;
+	while (y < env->y_max)
 	{
-		free(env->mlx);
-		return (ERROR);
+		free(env->final_tab[y]);
+		y++;
 	}
-	mlx->win = mlx_new_window(mlx->mlx, LARGEUR, HAUTEUR, "Fils De Flute");
-	if (mlx->win == NULL)
-		return (ERROR);
-	mlx->img = mlx_new_image(mlx->mlx, LARGEUR, HAUTEUR);
-	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel,
-			&mlx->size_line, &mlx->endian);
-	dd_point(env);
-	draw_line(env, point0, point1);
-	mlx_put_image_to_window(env->mlx->mlx, env->mlx->win, env->mlx->img, 0, 0);
-	// hooks_managemt(env);
-	// mlx_loop_hook(mlx, render, env);
-	mlx_loop(mlx->mlx);
-	return (0);
+	free(env->final_tab);
+}
+
+int	error(char *error_message)
+{
+	ft_printf("%s\n", error_message);
+	exit(1);
 }

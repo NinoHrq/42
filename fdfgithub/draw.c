@@ -6,70 +6,69 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:10:26 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/09/20 18:49:59 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/09/26 02:23:26 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	put_pixel(coord *env, int x, int y, int color)
+void	draw_lines(t_draw *drw, t_cor *env)
 {
-	char	*pxl;
-	unsigned int	*pxl_data;
-
-	if (x >= 0 && x < LARGEUR && y >= 0 && y < HAUTEUR)
-	{
-		pxl = env->mlx->addr + (y * env->mlx->line_length + x * (env->mlx->bits_per_pixel / 8));
-		pxl_data = (unsigned int *)pxl;
-		*pxl_data = color;
-	}
+	draw_calcul(*drw, env);
+	ft_putendl_fd("Dessin complet!", 1);
 }
 
-
-/*DDA*/
-void	draw_line(coord *env, t_fpoint point0, t_fpoint point1)
+void	draw_calcul(t_draw drw, t_cor *env)
 {
-	float	step;
-	float	x;
-	float	y;
-	int		i;
-
-	i = 0;
-	env->dx = point1.x - point0.x;
-	env->dy = point1.y - point0.y;
-	if (fabsf(env->dx) >= fabsf(env->dy))
-		step = fabsf(env->dx);
-	else
-		step = fabsf(env->dy);
-	env->dx = env->dx / step;
-	env->dy = env->dy / step;
-	x = point0.x;
-	y = point0.y;
-	while (i < step)
+	drw.scale_z = ft_scale(env);
+	drw.y = -1;
+	while (++drw.y < env->y_max)
 	{
-		put_pixel(env, -x + LARGEUR / 2 + TRANS, -y + HAUTEUR / 2 + TRANS, WHITE);
-		x = x + env->dx;
-		y = y + env->dy;
-		i++;
-	}
-}
-
-/*draw background pour les bonus
-void	draw_background(coord *env)
-{
-	int h;
-	int w;
-
-	h = 0;
-	w = 0;
-	while (h <= HAUTEUR)
-	{
-		w = 0;
-		while (w <= LARGEUR)
+		drw.x = -1;
+		while (++drw.x < env->x_max)
 		{
-			put_pixel(env, w, h, BLACK);
-			w++;
+			define_points_start(&drw, env);
+			draw_isometrique(&drw.x0, &drw.y0, drw.z0);
+			if (drw.x + 1 < env->x_max)
+			{
+				draw_horizontale(drw, env);
+			}
+			if (drw.y + 1 < env->y_max)
+			{
+				draw_verticale(drw, env);
+			}
 		}
-		h++;
 	}
-}*/
+	free_all(env);
+}
+
+void	draw_verticale(t_draw drw, t_cor *env)
+{
+	drw.z1 = (env->final_tab[drw.y + 1][drw.x]) * (drw.scale_z);
+	drw.x1 = ((drw.x)) * (scale_x(&drw, env));
+	drw.y1 = (((drw.y + 1) * scale_y(&drw, env) - env->final_tab
+			[drw.y + 1][drw.x]));
+	draw_isometrique(&drw.x1, &drw.y1, drw.z1);
+	bresenham(&drw);
+}
+
+void	draw_horizontale(t_draw drw, t_cor *env)
+{
+	drw.z1 = (env->final_tab[drw.y][drw.x + 1]) * (drw.scale_z);
+	drw.x1 = ((drw.x +1)) * scale_x(&drw, env);
+	drw.y1 = (((drw.y) * scale_y(&drw, env) - env->final_tab
+			[drw.y][drw.x + 1]));
+	draw_isometrique(&drw.x1, &drw.y1, drw.z1);
+	bresenham(&drw);
+}
+
+void	draw_isometrique(int *x, int *y, int z)
+{
+	int	tmp_x;
+	int	tmp_y;
+
+	tmp_x = *x;
+	tmp_y = *y;
+	*x = (LARGEUR / 2.5) + (tmp_x - tmp_y) * cos(ANGLE) / 2.81;
+	*y = (HAUTEUR / 2.81) + (((tmp_x + tmp_y) * sin(ANGLE)) - z) / 3;
+}

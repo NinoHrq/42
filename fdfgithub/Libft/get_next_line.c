@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 13:26:21 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/09/03 17:33:29 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/09/26 01:32:49 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	main(void)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		perror("Error opening file");
+		ft_printf("Error opening file");
 		return (1);
 	}
 	while ((line = get_next_line(fd)) != NULL)
@@ -108,7 +108,7 @@ int	main(void)
 	}
 	if (close(fd) == -1)
 	{
-		perror("Error closing file");
+		ft_printf("Error closing file");
 		return (1);
 	}
 	return (0);
