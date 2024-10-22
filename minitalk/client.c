@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:30:25 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/10/14 16:40:25 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/10/18 18:30:34 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,39 +64,39 @@ int	main(int argc, char **argv)
 void	send_char(int pid, char c)
 {
 	int	bit;
-	
-    bit = 7;
-    while (bit >= 0)
-    {
-        if ((c >> bit) & 1)
-            kill(pid, SIGUSR2);
-        else
-            kill(pid, SIGUSR1);
-        usleep(500);
-        bit--;
-    }
+
+	bit = 7;
+	while (bit >= 0)
+	{
+		if ((c >> bit) & 1)
+			kill(pid, SIGUSR2);
+		else
+			kill(pid, SIGUSR1);
+		usleep(500);
+		bit--;
+	}
 }
 
 int	main(int ac, char **av)
 {
-    int                i;
-    int                pid;
-    char            *message;
+	int		i;
+	int		pid;
+	char	*message;
 
-    if (ac != 3)
-    {
-        ft_printf("\n\tUsage : ./client PID ""message""\n\n");
-        return (0);
-    }
-    pid = ft_atoi(av[1]);
-    if (pid != ft_atoi(av[1]))
-        return (0);
-    message = av[2];
-    i = 0;
-    while (message[i])
-    {
-        send_char(pid, message[i]);
-        i++;
-    }
-    return (0);
+	if (ac != 3)
+	{
+		ft_printf("\n\tUsage : ./client PID ""message""\n\n");
+		return (0);
+	}
+	pid = ft_atoi(av[1]);
+	if (pid != ft_atoi(av[1]))
+		return (0);
+	message = av[2];
+	i = 0;
+	while (message[i])
+	{
+		send_char(pid, message[i]);
+		i++;
+	}
+	return (0);
 }

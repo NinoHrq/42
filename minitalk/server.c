@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:30:34 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/10/14 16:38:58 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/10/18 18:27:24 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	handle_signal(int bit)
 {
 	static int	count_bit = 0;
 	static char	c = 0;
-	
+
 	if (bit == SIGUSR1)
 		c = c << 1;
 	else if (bit == SIGUSR2)
@@ -106,7 +106,7 @@ void	handle_signal(int bit)
 
 int	main(int ac, char **av)
 {
-	int pid;
+	int	pid;
 
 	(void)av;
 	if (ac != 1)
