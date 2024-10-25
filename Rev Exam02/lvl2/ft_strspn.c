@@ -1,25 +1,27 @@
 #include <string.h>
 
-char	*ft_strchr(const char *s, int c)
+size_t ft_strcpn(const char *s, const char *accept)
 {
-	while (*s != '\0')
-	{
-		if (*s == c)
-			return ((char *)s);
-		++s;
-	}
-	return (0);
-}
+	int i;
+	int j;
+	size_t check;
 
-size_t	ft_strspn(const char *s, const char *accept)
-{
-	size_t i = 0;
-
-	while (s[i] != '\0')
+	i = 0;
+	check = 0;
+	while(s[i])
 	{
-		if (ft_strchr(accept, s[i]) == 0)
-			break ;
-		++i;
+		j = 0;
+		while (accept[j])
+		{
+			if (s[i] == accept[j])
+				check = 1;
+			j++;			
+		}
+		if (check == 0)
+		{
+			return (i);
+		}
+		i++;		
 	}
 	return (i);
 }
