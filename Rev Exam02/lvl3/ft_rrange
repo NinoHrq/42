@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-int	*ft_range(int start, int end)
+int	*ft_rrange(int start, int end)
 {
 	int	*tab;
 	int	i;
