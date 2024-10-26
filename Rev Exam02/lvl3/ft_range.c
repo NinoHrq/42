@@ -18,7 +18,6 @@ int	*ft_range(int start, int end)
 		start += (start > end) ? -1 : 1;
 	}
 	tab[i] = start;
-	sort_in_tab(tab, (unsigned int)len);
 	return (*tab);
 }
 
