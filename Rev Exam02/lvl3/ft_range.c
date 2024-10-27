@@ -36,6 +36,7 @@ void	sort_in_tab(int *tab, unsigned int len)
 			tab[i + 1] = tmp;
 			i = 0;
 		}
-		i++;
+		else
+			i++;
 	}
 }
