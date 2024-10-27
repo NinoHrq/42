@@ -21,7 +21,7 @@ int	*ft_range(int start, int end)
 	return (*tab);
 }
 
-void	sort_in_tab(int *tab, unsigned int len)
+/*void	sort_in_tab(int *tab, unsigned int len)
 {
 	unsigned int	i;
 	int				tmp;
@@ -39,4 +39,4 @@ void	sort_in_tab(int *tab, unsigned int len)
 		else
 			i++;
 	}
-}
+}*/
