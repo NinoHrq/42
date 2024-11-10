@@ -23,8 +23,8 @@ int	ft_atol(char *str, t_stack_node **stack)
 	number = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
-	if ((str[i + 1] >= 'a' && str[i + 1] <= 'z')
-		|| (str[i + 1] >= 'A' && str[i + 1] <= 'Z'))
+	if ((str[i] >= 'a' && str[i] <= 'z')
+		|| (str[i] >= 'A' && str[i] <= 'Z'))
 		free_errors(stack);
 	if (str[i] == '-' || str[i] == '+')
 	{
@@ -57,8 +57,8 @@ int	ft_atol_for_split(char *str, t_stack_node **stack, char **av)
 	number = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
-	if ((str[i + 1] >= 'a' && str[i + 1] <= 'z')
-		|| (str[i + 1] >= 'A' && str[i + 1] <= 'Z'))
+	if ((str[i] >= 'a' && str[i] <= 'z')
+		|| (str[i] >= 'A' && str[i] <= 'Z'))
 		free_errors_for_split(stack, av);
 	if (str[i] == '-' || str[i] == '+')
 	{
