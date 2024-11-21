@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:05:54 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/20 23:52:33 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/11/21 20:45:27 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int main(int ac, char **av)
     {
         parse_input(&table, av);
         data_init(&table);
-        dinner_start(&table);
+        start_dinner(&table);
         clean(&table);
     }
     else

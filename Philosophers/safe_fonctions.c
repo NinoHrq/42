@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 23:57:59 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/21 00:48:08 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:07:28 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void safe_mutex_handle(t_mtx *mutex, t_ezcode ezcode)
     else if(DESTROY == ezcode)
         handle_mutex_error(pthread_mutex_destroy(mutex), ezcode);
     else
-        error_exit("Wrong opcode for thread_handle:"
+        error_quit("Wrong opcode for thread_handle:"
             "use <LOCK> <UNLOCK> <DESTROY> or <INIT>");
 }
 
@@ -85,6 +85,6 @@ void safe_thread_handle(pthread_t *thread, void *(*foo) (void *), void *data, t_
     else if (DETACH == ezcode)
         handle_thread_error(pthread_detach(*thread), ezcode);
     else
-        error_exit("Wrong opcode for thread_handle:"
+        error_quit("Wrong opcode for thread_handle:"
             "use <CREATE> <JOIN> or <DETACH>");
 }

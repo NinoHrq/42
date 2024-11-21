@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:31:52 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/21 00:52:00 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/11/21 21:04:41 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static long	ft_atol(const char *str)
 {
 	int		i;
-	int		sign;
 	long	number;
 
 	i = 0;
@@ -36,15 +35,12 @@ static long	ft_atol(const char *str)
 		number = number * 10 + (str[i] - '0');
 		i++;
 	}
-	check_atol(number);
-	return (number);
+	if (number > (LONG_MAX / 10) || (number == (LONG_MAX / 10) && (str[i] - '0') 
+        > (LONG_MAX % 10)))
+    error_quit("Number is too large");
+    return (number);
 }
 
-static void	check_atol(long number)
-{
-	if (number > INT_MAX)
-		error_quit("Value is bigger than INT_MAX");
-}
 void parse_input(t_table *table, char **av)
 {
     table->philo_nbr = ft_atol(av[1]);
@@ -58,7 +54,5 @@ void parse_input(t_table *table, char **av)
     if(av[5])
         table->nbr_limit_meals = ft_atol(av[5]);
     else
-        table->nbr_limit_meals = -1;
-    
-    
+        table->nbr_limit_meals = -1;  
 }
