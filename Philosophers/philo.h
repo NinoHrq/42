@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:06:13 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/20 21:20:57 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/11/21 01:18:36 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <limits.h>
+#include <errno.h>
 
 //Usage printf(BLACK "This is black text" RESET "\n");
 #define BLACK   "\033[30m"
@@ -29,6 +30,16 @@
 #define WHITE   "\033[37m"
 #define RST     "\033[0m"
 
+typedef enum s_ezcode
+{
+    LOCK,
+    UNLOCK,
+    INIT,
+    DESTROY,
+    CREATE,
+    JOIN,
+    DETACH,
+}           t_ezcode;
 
 //Structures
 typedef pthread_mutex_t t_mtx;
@@ -46,8 +57,8 @@ typedef struct s_philo
     long meals_counter;
     bool full;
     long last_meal_time;
-    t_fork *left_fork;
-    t_fork *right_fork;
+    t_fork *first_fork;
+    t_fork *second_fork;
     pthread_t thread_id;
     t_table *table;
 }             t_philo;
@@ -68,3 +79,14 @@ struct s_table  //contient l'ensemble des data
 //Prototypes
     //utils.c
 void error_quit(const char *error);
+
+    //parsing.c
+void parse_input(t_table *table, char **av);
+
+    //safe_fonctions.c
+void safe_thread_handle(pthread_t *thread, void *(*foo) (void *), void *data, t_ezcode ezcode);
+void safe_mutex_handle(t_mtx *mutex, t_ezcode ezcode);
+void *safe_malloc(size_t bytes);
+
+    //init.c
+void data_init(t_table *table);
