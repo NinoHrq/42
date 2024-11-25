@@ -1,4 +1,4 @@
-SRCS        = main.c utils.c   parsing.c 
+SRCS        = main.c utils.c parsing.c routine.c 
 	
 OBJ_DIR     = obj
 OBJS        = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
