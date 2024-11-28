@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:06:13 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/25 19:24:34 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:46:29 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,7 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
-
-# define BLACK "\033[30m"
-# define RED "\033[31m"
-# define GREEN "\033[32m"
-# define Y "\033[33m"
-# define BLUE "\033[34m"
-# define M "\033[35m"
-# define C "\033[36m"
-# define W "\033[37m"
-# define RST "//\033[0m"
+# include <math.h>
 
 // Structures
 typedef struct s_philo
@@ -71,13 +62,26 @@ long				get_current_time(void);
 
 // main.c
 int					check_param(int ac, char **av);
-void	free_all(t_param *param, t_philo *philo);
+void				free_all(t_param *param, t_philo *philo);
 
 // routine.c
-void 				*routine(void *arg);
+void				*routine(void *arg);
 void				eat_infinite(t_param *param, t_philo *philo);
 void				eat_your_meals(t_param *param, t_philo *philo);
 void				dinner(t_param *param, t_philo *philo);
 void				take_forks_even(t_param *param, t_philo *philo);
 void				take_forks_odd(t_param *param, t_philo *philo);
+void				after_forks(t_param *param, t_philo *philo);
+void				for_eat(t_philo *philo, t_param *param, long time);
+void				for_sleep(t_philo *philo, t_param *param, long time);
+void				for_think(t_philo *philo, t_param *param, long time);
+
+// eat_sup_die.c
+void				spe_case(t_param *param, t_philo *philo, char c);
+void				eat_sup_die(t_param *param, t_philo *philo);
+void				after_forks_spe_eat(t_param *param, t_philo *philo);
+void				printd_dead(t_param *param, t_philo *philo, long time);
+void				sleep_sup_die(t_param *param, t_philo *philo);
+void				after_forks_spe_sleep(t_param *param, t_philo *philo);
+
 #endif

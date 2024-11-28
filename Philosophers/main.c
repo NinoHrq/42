@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:05:54 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/25 19:27:40 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:11:34 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ int	main(int ac, char **av)
 	param = malloc(sizeof(t_param));
 	parse_input(&param, av);
 	philo = malloc(sizeof(t_philo) * param->philo_nbr);
-	if (!parse_philo(param, philo))
-		return(1);
+	parse_philo(param, philo);
 	while (++i < param->philo_nbr)
 		pthread_join(philo[i].thread, NULL);
 	free_all(param, philo);
+	return (0);
 }

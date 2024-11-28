@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:31:52 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/25 19:20:51 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:45:57 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ long	ft_atol(const char *str)
 		number = number * 10 + (str[i] - '0');
 		i++;
 	}
-	if (number > (LONG_MAX / 10) || (number == (LONG_MAX / 10) && (str[i]
-				- '0') > (LONG_MAX % 10)))
+	if (number > INT_MAX || number < 0)
 		error_quit("Number is too large");
 	return (number);
 }
@@ -65,13 +64,13 @@ void	parse_input(t_param **param, char **av)
 	(*param)->start_simulation = get_current_time();
 }
 
-int parse_philo(t_param *param, t_philo *philo)
+int	parse_philo(t_param *param, t_philo *philo)
 {
-	int i;
-	int res;
-	
-	i = -1;
-	while(++i < param->philo_nbr)
+	int	i;
+	int	res;
+
+	i = 0;
+	while (i < param->philo_nbr)
 	{
 		philo[i].id = i + 1;
 		philo[i].meals_counter = 0;
@@ -79,12 +78,13 @@ int parse_philo(t_param *param, t_philo *philo)
 		philo[i].left_fork = &param->forks[i];
 		philo[i].right_fork = &param->forks[(i + 1) % param->philo_nbr];
 		philo[i].param = param;
-		res = pthread_create(&philo[i].thread,NULL, routine, &philo[i]);
+		res = pthread_create(&philo[i].thread, NULL, routine, &philo[i]);
 		if (res != 0)
 		{
 			printf("Error creating thread philo");
-			return(1);
-		}		 
+			return (1);
+		}
+		i++;
 	}
 	return (0);
 }
