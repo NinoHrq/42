@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:05:54 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/28 17:11:34 by nharraqi         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:39:19 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	check_param(int ac, char **av)
 	}
 	return (0);
 }
+
 void	free_all(t_param *param, t_philo *philo)
 {
 	int	i;
@@ -48,9 +49,9 @@ void	free_all(t_param *param, t_philo *philo)
 
 int	main(int ac, char **av)
 {
-	int i;
-	t_param *param;
-	t_philo *philo;
+	int			i;
+	t_param		*param;
+	t_philo		*philo;
 
 	i = -1;
 	if (check_param(ac, av))
