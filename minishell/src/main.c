@@ -72,12 +72,10 @@ void	interprete_commande(char *input)
 	char	*trimmed_input;
 
 	trimmed_input = skip_isspace_for_fonctions(input);
-	// ft_printf("input : %s\n", input);
-	// ft_printf("trimmed_input ; %s\n", trimmed_input);
 	if (ft_strcmp(trimmed_input, "exit") == 0)
 	{
 		if (ft_strcmp(trimmed_input, "exit") == 0 && ft_strcmp(trimmed_input,
-				input) == 0)
+				input) == 0 )
 		{
 			printf("🏃 exit\n");
 			g_minishell_check = 1;
