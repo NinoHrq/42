@@ -15,10 +15,11 @@
 
 extern int	g_minishell_check;
 
-typedef struct s_cd
+typedef struct s_token
 {
-	int		ewrgea;
-}			t_cd;
+	int		token;
+	char	*symbol;
+}			t_token;
 
 // init_c
 void		init_global(void);
@@ -42,5 +43,6 @@ void		ft_clear(char *input);
 int			ft_strcmp(char *s1, char *s2);
 void		free_split(char **array);
 int			is_number(char *str);
+int			check_token(char *input, t_token *token);
 
 #endif

@@ -7,6 +7,16 @@ char	*parse_input_ls(char *input)
 	i = 0;
 	while (input[i])
 	{
+		if (input[i] == ';' && input[i + 1] == '\0')
+		{
+			input[i] = '\0';
+			break ;
+		}
+		if (input[i] == ';' && input[i + 1] != '\0')
+		{
+			input[i] = '\0';
+			break ;
+		}
 		if (input[i] == ';' && (input[i - 1] != ' '))
 		{
 			input[i] = '\0';
@@ -26,13 +36,13 @@ void	ft_ls(char *input)
 
 	input = parse_input_ls(input);
 	args = ft_split(input, ' ');
-    if (args[1] == NULL)
-    {
-        path = ".";
-        dir = opendir(path);
-    }
-    else
-	    dir = opendir(args[1]);
+	if (args[1] == NULL)
+	{
+		path = ".";
+		dir = opendir(path);
+	}
+	else
+		dir = opendir(args[1]);
 	if (!dir)
 	{
 		printf("💔_(ಥ﹏ಥ)_💔: cannot access\n");
