@@ -186,8 +186,8 @@ void	interprete_commande(char *input, t_ee *ee)
 	//	ft_clear(input);
 	else if (ft_strcmp(trimmed_input, "env") == 0)
 		ft_env(ee);
-	else if (ft_strcmp(trimmed_input, "wc") == 0)
-		ft_wc(input);
+	//else if (ft_strcmp(trimmed_input, "wc") == 0)
+	//	ft_wc(input);
 	else if (ft_strcmp(trimmed_input, "unset") == 0)
 		ft_unset(input, ee);
 	else if ((ft_strcmp(trimmed_input, "export") == 0)
@@ -446,7 +446,6 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	init_struct(ee);
 	ee->envp = copy_envp(envp);
-	g_omg_le_plus_beau_du_tieks_ca_dit_koi_le_sang_trkl_la_bess_j_ai_vu_tu_connais_ici_c_est_la_debrouille = 42;
 	while (ee->minishell_check == 0)
 	{
 		catch_signal();
