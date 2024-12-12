@@ -1,6 +1,22 @@
 #include "../minishell.h"
 
-void    init_global(void)
+int	ft_strlonglen(char **s)
 {
-    g_minishell_check = 0;
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+void	init_struct(t_ee *ee)
+{
+	ee->minishell_check = 0;
+	ee->change_confirmed = 0;
+	ee->copy_pwd = NULL;
+	ee->copy_oldpwd = NULL;
+	ee->if_unset__pwd = 0;
+	ee->if_unset__oldpwd = 0;
+	ee->if_unset__shlvl = 0;
 }

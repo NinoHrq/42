@@ -28,16 +28,10 @@ int	check_simple_exit(char *input)
 		i++;
 	while (input[i] > 32)
 		i++;
-	while (input[i] <= 32)
-	{
-		if (input[i] > 32)
-			return (1);
-		i++;
-	}
 	return (0);
 }
 
-void	ft_exit(char *input)
+void	ft_exit(char *input, t_ee *ee)
 {
 	t_token	*exit;
 	char	**args;
@@ -49,7 +43,10 @@ void	ft_exit(char *input)
 	if (check_simple_exit(input) == 0 && args[1] == NULL)
 	{
 		ft_printf("🏃 exit\n");
-		g_minishell_check = 1;
+		if (args)
+			free_split(args);
+		free(exit);
+		ee->minishell_check = 1;
 		return ;
 	}
 	if (exit->token == 1)
@@ -63,7 +60,8 @@ void	ft_exit(char *input)
 		ft_printf("🚧_(⊙_⊙;)_🚧 : exit: %s: numeric argument required\n",
 			args[1]);
 		free_split(args);
-		g_minishell_check = 1;
+		free(exit);
+		ee->minishell_check = 1;
 	}
 	else if (args[2] != NULL && args[1][0] != ';' && args[2][0] != ';')
 	{
@@ -74,6 +72,7 @@ void	ft_exit(char *input)
 	{
 		ft_printf("🏃 exit\n");
 		free_split(args);
-		g_minishell_check = 1;
+		free(exit);
+		ee->minishell_check = 1;
 	}
 }

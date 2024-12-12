@@ -2,7 +2,7 @@
 
 char	*parse_input_clear(char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (input[i])
@@ -17,15 +17,15 @@ char	*parse_input_clear(char *input)
 	return (input);
 }
 
-void    ft_clear(char *input)
+void	ft_clear(char *input)
 {
-    char **args;
+	char	**args;
 
-    input = parse_input_clear(input);
+	input = parse_input_clear(input);
 	args = ft_split(input, ' ');
-    if (args[1] != NULL)
-        printf("🦇 (¬‿¬) 🦇: Usage: clear\n");
-    else
-        system("clear");
-
+	if (args[1] != NULL)
+		printf("🦇 (¬‿¬) 🦇: Usage: clear\n");
+	else
+		system("clear");
+	free_split(args);
 }
