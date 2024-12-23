@@ -16,15 +16,25 @@ void	ft_unset(char *input, t_ee *ee)
 {
 	char **args;
 	char **new_envp;
-	int i, j;
+	int i, j, k;
+	int skip;
 	int len;
 
-	/////////////////////////// split dans une autre fonction pour la norme //
 	args = ft_split(input, ' ');
-	if (args[1] == NULL)
+	if (!args || !args[1])
 	{
 		free_split(args);
 		return ;
+	}
+	i = 1;
+	while (args[i])
+	{
+		if ((!ee->envp || !ee->envp[0]) && ft_strcmp(args[i], "PATH") == 0)
+		{
+			unsetenv("PATH");
+			ee->lock_path = 1;
+		}
+		i++;
 	}
 	new_envp = malloc(sizeof(char *) * (ft_strlonglen(ee->envp) + 1));
 	if (!new_envp)
@@ -32,33 +42,48 @@ void	ft_unset(char *input, t_ee *ee)
 		free_split(args);
 		return ;
 	}
-	/////////////////////////////////////////////////////////////////////////
-	len = ft_strlen(args[1]);
 	i = 0;
-	j = 0;
-	while (ee->envp[i])
+	k = 0;
+	while (ee->envp && ee->envp[i])
 	{
-		if (ft_strncmp(ee->envp[i], args[1], len) == 0
-			&& ee->envp[i][len] == '=')
+		skip = 0;
+		j = 1;
+		while (args[j])
 		{
-			i++;
-			continue ;
+			len = ft_strlen(args[j]);
+			if (ft_strncmp(ee->envp[i], args[j], len) == 0 && ee->envp[i][len] == '=')
+			{
+				if (ft_strcmp("PATH", args[j]) == 0)
+				{
+					unsetenv("PATH");
+					ee->path_is_not_able = 1;
+				}
+				skip = 1;
+				break ;
+			}
+			j++;
 		}
-		new_envp[j] = ft_strdup(ee->envp[i]);
-		j++;
+		if (!skip)
+		{
+			new_envp[k] = ft_strdup(ee->envp[i]);
+			k++;
+		}
 		i++;
 	}
-	new_envp[j] = NULL;
+	new_envp[k] = NULL;
+
 	free_split(ee->envp);
 	ee->envp = new_envp;
-	unsetenv(args[1]);
-	//// CAS SPECIFIQUE ////
-	if (ft_strcmp(args[1], "PWD") == 0)
-		ee->if_unset__pwd = 1;
-	if (ft_strcmp(args[1], "OLDPWD") == 0)
-		ee->if_unset__oldpwd = 1;
-	if (ft_strcmp(args[1], "SHLVL") == 0)
-		ee->if_unset__shlvl = 1;
-	////////////////////////
+	i = 1;
+	while (args[i])
+	{
+		if (ft_strcmp(args[i], "PWD") == 0)
+			ee->if_unset__pwd = 1;
+		if (ft_strcmp(args[i], "OLDPWD") == 0)
+			ee->if_unset__oldpwd = 1;
+		if (ft_strcmp(args[i], "SHLVL") == 0)
+			ee->if_unset__shlvl = 1;
+		i++;
+	}
 	free_split(args);
 }

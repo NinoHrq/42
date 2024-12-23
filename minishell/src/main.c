@@ -80,15 +80,23 @@ int	check_token_in_all_string(char *input, t_token *tok)
 	{
 		if (input[i] == ';')
 		{
+			if (input[i + 1] == '\0')
+				return (0);
 			if (input[i + 1] == ';')
+			{
+				tok->token = 3;
 				return (1);
-			while (input[i + 1] <= 32)
+			}
+			i++;
+			while (input[i] && input[i] <= 32)
 				i++;
-			if (input[i + 1] == ';')
+			if (input[i] == ';')
 			{
 				tok->token = 2;
 				return (1);
 			}
+			if (input[i] == '\0')
+				return (0);
 		}
 		i++;
 	}
@@ -176,18 +184,15 @@ void	interprete_commande(char *input, t_ee *ee)
 	{
 		if (ee->copy_oldpwd)
 			free(ee->copy_oldpwd);
-		if (ee->copy_pwd)
-			free(ee->copy_pwd);
 		ft_cd(input, ee);
 	}
-	// else if (ft_strcmp(trimmed_input, "ls") == 0)
-	//	ft_ls(input);
-	// else if (ft_strcmp(trimmed_input, "clear") == 0)
-	//	ft_clear(input);
 	else if (ft_strcmp(trimmed_input, "env") == 0)
-		ft_env(ee);
-	//else if (ft_strcmp(trimmed_input, "wc") == 0)
-	//	ft_wc(input);
+	{
+		if (ee->path_is_not_able == 0)
+			ft_env(ee);
+		else
+			ft_printf("🌳(´•︵•`)🌳: env: No such file or directory\n");
+	}
 	else if (ft_strcmp(trimmed_input, "unset") == 0)
 		ft_unset(input, ee);
 	else if ((ft_strcmp(trimmed_input, "export") == 0)
@@ -203,36 +208,12 @@ void	interprete_commande(char *input, t_ee *ee)
 	free(token);
 	free(trimmed_input);
 }
-/*char *find_command_path(char *command)
-{
-	char	*path_env;
-	char	*path_dup;
-	char	*dir;
-		char full_path[1024];
-	int		i;
-	int		j;
 
-	path_env = getenv("PATH");
-	path_dup = ft_strdup(path_env);
-	dir = strtok(path_dup, ":");
-	while (dir)
-	{
-		snprintf(full_path, sizeof(full_path), "%s/%s", dir, command);
-		if (access(full_path, X_OK) == 0)
-		{
-			free(path_dup);
-			return (ft_strdup(full_path));
-		}
-		dir = strtok(NULL, ":");
-	}
-	free(path_dup);
-	return (NULL);
-}*/
 char	*ft_strcat(char *dest, const char *src)
 {
-	int i;
-	int j;
-	
+	int	i;
+	int	j;
+
 	i = 0;
 	while (dest[i])
 		i++;
@@ -321,29 +302,18 @@ void	cumulate_token(char *input, t_ee *ee)
 	int			j;
 
 	j = 0;
-	// printf("Input: %s\n", input);
-	// printf("Copy: %s\n", copy);
 	if (!input || input[i] == '\0')
 		return ;
 	while (input[i] != '\0' && input[i] != ';')
 		copy[j++] = input[i++];
 	copy[j] = '\0';
-	// printf("Input: %c\n", input[i]);
-	// printf("Copy: %s\n", copy);
 	interprete_commande(copy, ee);
-	// printf("%c\n", input[i]);
 	if (input[i] == ';')
 		i++;
 	if (input[i] != '\0')
-	{
-		// printf("input de fin %c\n", input[i]);
 		cumulate_token(input, ee);
-	}
 	else
-	{
 		i = 0;
-		// printf("input apres reset %c\n", input[i]);
-	}
 	return ;
 }
 
@@ -364,14 +334,152 @@ void	catch_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
+void	you_shall_not_path(void)
+{
+	char	*path_env;
+
+	path_env = getenv("PATH");
+	if (!path_env || *path_env == '\0')
+		setenv("PATH", "/bin:/usr/bin", 1);
+}
+
+char	**parse_dollars(char **args, t_ee *ee)
+{
+	char	*copy;
+	char	**changed_args;
+	char	*after_equal;
+	char	*before_equal;
+	int		lock;
+
+	int i, j, k, x, y, m;
+	changed_args = malloc(sizeof(char *) * (ft_strlonglen(args) + 1));
+	if (!changed_args)
+		return (NULL);
+	i = 0;
+	while (args[i])
+	{
+		lock = 0;
+		if (args[i][0] == '$')
+		{
+			copy = malloc(sizeof(char) * ft_strlen(args[i]));
+			if (!copy)
+				return (NULL);
+			j = 1;
+			k = 0;
+			while (args[i][j])
+				copy[k++] = args[i][j++];
+			copy[k] = '\0';
+			x = 0;
+			while (ee->envp[x])
+			{
+				y = 0;
+				if (ft_strncmp(ee->envp[x], copy, ft_strlen(copy)) == 0
+					&& ee->envp[x][ft_strlen(copy)] == '=')
+				{
+					y = ft_strlen(copy) + 1;
+					after_equal = ft_strdup(ee->envp[x] + y);
+					if (!after_equal)
+						return (NULL);
+					changed_args[i] = after_equal;
+					lock = 1;
+					break ;
+				}
+				x++;
+			}
+			if (!lock)
+				changed_args[i] = ft_strdup(args[i]);
+			free(copy);
+		}
+		else
+		{
+			j = 0;
+			while (args[i][j] && args[i][j] != '$')
+				j++;
+			if (args[i][j] == '$')
+			{
+				m = j;
+				before_equal = malloc(sizeof(char) * (m + 1));
+				if (!before_equal)
+					return (NULL);
+				k = 0;
+				while (k < m)
+				{
+					before_equal[k] = args[i][k];
+					k++;
+				}
+				before_equal[m] = '\0';
+				changed_args[i] = before_equal;
+				lock = 1;
+			}
+			if (!lock)
+				changed_args[i] = ft_strdup(args[i]);
+		}
+		i++;
+	}
+	changed_args[i] = NULL;
+	return (changed_args);
+}
+
+char	**check_dollars(char *input, t_ee *ee)
+{
+	char	**args;
+	char	**changed_args;
+
+	args = ft_split(input, ' ');
+	if (!args)
+		return (NULL);
+	changed_args = parse_dollars(args, ee);
+	if (!changed_args)
+		return (NULL);
+	free_split(args);
+	return (changed_args);
+}
+
+char	*reconstruct_input(char **changed_args)
+{
+	int		i;
+	size_t	total_len;
+	char	*new_input;
+	char	*current_pos;
+	size_t	len;
+
+	i = 0;
+	total_len = 0;
+	while (changed_args[i])
+	{
+		total_len += ft_strlen(changed_args[i]) + 1;
+		i++;
+	}
+	new_input = malloc(sizeof(char) * total_len);
+	if (!new_input)
+		return (NULL);
+	current_pos = new_input;
+	i = 0;
+	while (changed_args[i])
+	{
+		len = ft_strlen(changed_args[i]);
+		ft_memcpy(current_pos, changed_args[i], len);
+		current_pos += len;
+		if (changed_args[i + 1])
+			*current_pos++ = ' ';
+		i++;
+	}
+	*current_pos = '\0';
+	return (new_input);
+}
+
 void	loop(char *input, t_ee *ee)
 {
 	t_token	*tok;
+	char	**changed_args;
 
+	changed_args = NULL;
+	if ((!ee->envp || !ee->envp[0]) && ee->lock_path == 0)
+		you_shall_not_path();
 	tok = malloc(sizeof(t_token));
 	tok->found = 0;
 	input = readline("🍀_(^o^)_🍀  > ");
-	if (input == NULL || *input == '\0')
+	if (input == NULL)
 		ee->minishell_check = 1;
 	if (input && *input)
 	{
@@ -387,18 +495,31 @@ void	loop(char *input, t_ee *ee)
 						printf("🛠️_(>_<;)_🛠️   : syntax error near unexpected token `;'\n");
 						tok->token = 0;
 					}
-					else
+					else if (tok->token == 3)
 						printf("🛠️_(>_<;)_🛠️   : syntax error near unexpected token `;;'\n");
 					free(input);
 					free(tok);
 					return ;
 				}
+				changed_args = check_dollars(input, ee);
+				if (!changed_args)
+					return ;
+				free(input);
+				input = reconstruct_input(changed_args);
 				cumulate_token(input, ee);
 			}
 			else
+			{
+				changed_args = check_dollars(input, ee);
+				if (!changed_args)
+					return ;
+				free(input);
+				input = reconstruct_input(changed_args);
 				interprete_commande(input, ee);
+			}
 		}
 	}
+	free_split(changed_args);
 	free(input);
 	free(tok);
 }
@@ -434,6 +555,24 @@ char	**copy_envp(char **envp)
 	return (copy);
 }
 
+char	*save_initial_path(t_ee *ee)
+{
+	int i = 0;
+	char *tmp;
+
+	tmp = NULL;
+	while (ee->envp[i])
+	{
+		if (ee->envp[i][0] == 'P' && ee->envp[i][1] == 'A' && ee->envp[i][2] == 'T' && ee->envp[i][3] == 'H' && ee->envp[i][4] == '=')
+		{
+			tmp = ft_strdup(ee->envp[i]);
+			break ;
+		}
+		i++;
+	}
+	return (tmp);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_ee	*ee;
@@ -446,6 +585,8 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	init_struct(ee);
 	ee->envp = copy_envp(envp);
+	ee->save_initial_path = save_initial_path(ee);
+	//ft_printf("%s\n", ee->save_initial_path);
 	while (ee->minishell_check == 0)
 	{
 		catch_signal();
@@ -461,7 +602,12 @@ int	main(int ac, char **av, char **envp)
 		free(ee->copy_oldpwd);
 	if (ee->copy_pwd)
 		free(ee->copy_pwd);
-	free(ee->envp);
+	if (ee->envp)
+		free(ee->envp);
+	if (ee->copy_export_env)
+		free_split(ee->copy_export_env);
+	if (ee->save_initial_path)
+		free(ee->save_initial_path);
 	free(ee);
 	clear_history();
 	return (0);

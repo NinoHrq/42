@@ -1,7 +1,4 @@
 #include "../../minishell.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <string.h>
 
 void	ft_echo(char *input)
 {
@@ -12,19 +9,19 @@ void	ft_echo(char *input)
 	no_newline = false;
 	i = 1;
 	args = ft_split(input, ' ');
-	if (args[i] && strcmp(args[i], "-n") == 0)
+	if (args[i] && ft_strcmp(args[i], "-n") == 0)
 	{
 		no_newline = true;
 		i++;
 	}
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		ft_printf("%s", args[i]);
 		if (args[i + 1])
-			printf(" ");
+			ft_printf(" ");
 		i++;
 	}
 	if (!no_newline)
-		printf("\n");
+		ft_printf("\n");
 	free_split(args);
 }
