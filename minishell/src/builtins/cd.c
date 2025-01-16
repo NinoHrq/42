@@ -1,23 +1,5 @@
 #include "../../minishell.h"
 
-
-/*char	*parse_input_cd(char *input)
-{
-	int i;
-
-	i = 0;
-	while (input[i])
-	{
-		if (input[i] == ';' && (input[i - 1] != ' '))
-		{
-			input[i] = '\0';
-			break ;
-		}
-		i++;
-	}
-	return (input);
-}*/
-
 char	*parse_input_cd(char *input)
 {
 	int i = 0;
