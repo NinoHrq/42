@@ -278,25 +278,6 @@ char	*find_command_path(char *command)
 	return (full_path);
 }
 
-/*int is_command_in_envp(char *command, t_ee *ee)
-{
-    int i = 0;
-    char *env_value;
-    char *env_command;
-
-    while (ee->envp[i] != NULL)
-    {
-        if ((env_value = ft_strchr(ee->envp[i], '=')) != NULL)
-        {
-            env_command = env_value + 1;
-            if (ft_strcmp(command, env_command) == 0)
-                return 1;
-        }
-        i++;
-    }
-    return 0;
-}*/
-
 
 void	execute_external_command(char *command, t_ee *ee)
 {
@@ -374,31 +355,6 @@ int cumulate_token(char *input, t_ee *ee)
     return 0;
 }
 
-
-/*int	cumulate_token(char *input, t_ee *ee)
-{
-	static int	i = 0;
-	char		copy[1024];
-	int			j;
-
-	j = 0;
-	if (!input || input[i] == '\0')
-		return (1);
-	while (input[i] != '\0' && input[i] != ';')
-		copy[j++] = input[i++];
-	copy[j] = '\0';
-	if (ft_strchr(copy, '|')) 
-        execute_pipeline(copy, ee);
-	else
-		interprete_commande(copy, ee);
-	if (input[i] == ';')
-		i++;
-	if (input[i] != '\0')
-		cumulate_token(input, ee);
-	else
-		i = 0;
-	return (0);
-}*/
 
 void	handle_sigint(int sig)
 {
@@ -824,129 +780,6 @@ void loop(char *input, t_ee *ee)
     free(tok);
 }
 
-
-
-
-/*void loop(char *input, t_ee *ee)
-{
-    t_token *tok;
-    char **changed_args;
-
-    changed_args = NULL;
-    if ((!ee->envp || !ee->envp[0]) && ee->lock_path == 0)
-        you_shall_not_path();
-    tok = malloc(sizeof(t_token));
-    tok->found = 0;
-    input = readline("🍀_(^o^)_🍀  > ");
-    if (input == NULL)
-        ee->minishell_check = 1;
-    if (input && *input) 
-	{
-        add_history(input);
-        if (check_string(input) == 0) 
-		{
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			if (token_found(input, tok) == 1)
-			{
-				if (check_token_in_all_string(input, tok) == 1)
-				{
-					if (tok->token == 2)
-					{
-						printf("🛠️_(>_<;)_🛠️   : syntax error near unexpected token `;'\n");
-						tok->token = 0;
-					}
-					else if (tok->token == 3)
-						printf("🛠️_(>_<;)_🛠️   : syntax error near unexpected token `;;'\n");
-					free(input);
-					free(tok);
-					return ;
-				}
-			}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			if (ft_strchr(input, '|') && cumulate_token(input, ee) == 1) 
-			{
-                execute_pipeline(input, ee);
-            }
-			else if (!ft_strchr(input, '|') && cumulate_token(input, ee) == 1) 
-			{
-                changed_args = check_dollars(input, ee);
-                if (!changed_args)
-                    return;
-                free(input);
-                input = reconstruct_input(changed_args);
-                interprete_commande(input, ee);
-            }
-        }
-    }
-    free_split(changed_args);
-    free(input);
-    free(tok);
-}*/
-
-
-
-
-/// 			ANCIENNE LOOP
-
-
-
-/*void	loop(char *input, t_ee *ee)
-{
-	t_token	*tok;
-	char	**changed_args;
-
-	changed_args = NULL;
-	if ((!ee->envp || !ee->envp[0]) && ee->lock_path == 0)
-		you_shall_not_path();
-	tok = malloc(sizeof(t_token));
-	tok->found = 0;
-	input = readline("🍀_(^o^)_🍀  > ");
-	if (input == NULL)
-		ee->minishell_check = 1;
-	if (input && *input)
-	{
-		add_history(input);
-		if (check_string(input) == 0)
-		{
-			if (token_found(input, tok) == 1)
-			{
-				if (check_token_in_all_string(input, tok) == 1)
-				{
-					if (tok->token == 2)
-					{
-						printf("🛠️_(>_<;)_🛠️   : syntax error near unexpected token `;'\n");
-						tok->token = 0;
-					}
-					else if (tok->token == 3)
-						printf("🛠️_(>_<;)_🛠️   : syntax error near unexpected token `;;'\n");
-					free(input);
-					free(tok);
-					return ;
-				}
-				changed_args = check_dollars(input, ee);
-				if (!changed_args)
-					return ;
-				free(input);
-				input = reconstruct_input(changed_args);
-				cumulate_token(input, ee);
-			}
-			else
-			{
-				changed_args = check_dollars(input, ee);
-				if (!changed_args)
-					return ;
-				free(input);
-				input = reconstruct_input(changed_args);
-				interprete_commande(input, ee);
-			}
-		}
-	}
-	free_split(changed_args);
-	free(input);
-	free(tok);
-}*/
 
 int	check_string(char *input)
 {

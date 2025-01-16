@@ -77,10 +77,34 @@ typedef struct s_envp_copy
 	char	*save_initial_path;
 }			t_ee;
 
-// init_c
+// init.c
 int			ft_strlonglen(char **s);
 void		init_struct(t_ee *ee);
 
+// ---------- MAIN ----------- //
+
+// main.c
+int			main(int ac, char **av, char **envp);
+void 		free_condition(t_ee *ee);
+char		**copy_envp(char **envp);
+char		*save_initial_path(t_ee *ee);
+void		catch_signal(void);
+
+// utilsmain1.c
+void	handle_sigint(int sig);
+void	loop(char *input, t_ee *ee);
+void	handle_environment(t_ee *ee);
+char	*handle_multiline_input(char *input, t_ee *ee);
+int		has_unmatched_quotes(const char *input);
+
+// utilsmain2.c
+char	*append_next_line(char *input, t_ee *ee);
+void	process_input(char *input, t_token *tok, t_ee *ee);
+void	handle_syntax_error(t_token *tok);
+void	execute_commands(char *input, t_token *tok, t_ee *ee);
+void	you_shall_not_path(void);
+
+// utilsmain3.c
 // ---------- BUILTINS ----------- //
 
 // exit.c
