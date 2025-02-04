@@ -6,11 +6,17 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:16:34 by nharraqi          #+#    #+#             */
-/*   Updated: 2025/02/04 17:19:12 by nharraqi         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:46:32 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+int		ft_strcmpchar(char a, char b);
+void	free_and_update_envp(t_ee *ee, int i, char *copy);
+int		find_pwd_index(t_ee *ee);
+void	check_variable_pwd(t_ee *ee);
+char	*ft_strjoin_cd(char *s1, char *s2);
 
 int	ft_strcmpchar(char a, char b)
 {

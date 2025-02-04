@@ -1,4 +1,4 @@
-SRCS        = src/main.c src/init.c src/builtins/exit.c src/builtins/pwd.c src/builtins/cd.c src/builtins/cd2.c\
+SRCS        = src/main.c src/init.c src/builtins/exit.c src/builtins/pwd.c src/builtins/cd.c src/builtins/cd2.c \
 			src/builtins/ft_ls.c src/builtins/ft_clear.c src/builtins/ft_env.c src/builtins/ft_wc.c \
 			src/builtins/ft_unset.c src/builtins/ft_export.c src/builtins/ft_echo.c
 OBJ_DIR     = obj

@@ -87,13 +87,16 @@ void		ft_exit(char *input, t_ee *ee);
 // pwd.c
 void		ft_pwd(void);
 // cd.c
-void		ft_cd(char *input, t_ee *ee);
-void		handle_home_directory(t_ee *ee, t_cd *cd,int result);
-int			change_directory(t_ee *ee, t_cd *cd, int result);
-void		free_cd_struct(t_cd *cd);
-int			find_pwd_index(t_ee *ee);
-void		free_and_update_envp(t_ee *ee, int i, char *copy);
-
+char	*parse_input_cd(char *input);
+void	ft_cd(char *input, t_ee *ee);
+void	handle_home_directory(t_ee *ee, t_cd *cd, int result);
+int		change_directory(t_ee *ee, t_cd *cd, int result);
+void	free_cd_struct(t_cd *cd);
+int		ft_strcmpchar(char a, char b);
+void	free_and_update_envp(t_ee *ee, int i, char *copy);
+int		find_pwd_index(t_ee *ee);
+void	check_variable_pwd(t_ee *ee);
+char	*ft_strjoin_cd(char *s1, char *s2);
 // ls.c
 void		ft_ls(char *input);
 // clear.c
