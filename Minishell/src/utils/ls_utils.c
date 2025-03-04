@@ -1,24 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_clear.c                                         :+:      :+:    :+:   */
+/*   ls_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/27 19:25:26 by tmilin            #+#    #+#             */
-/*   Updated: 2025/02/27 19:25:27 by tmilin           ###   ########.fr       */
+/*   Created: 2025/02/27 19:36:11 by tmilin            #+#    #+#             */
+/*   Updated: 2025/02/27 19:36:12 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*parse_input_clear(char *input)
+void	init_ls(t_ls *ls, char *input)
+{
+	ls->args = ft_split(input, ' ');
+	ls->file_found = 0;
+	if (ls->args[1] == NULL)
+		ls->path = ".";
+	else
+		ls->path = ls->args[1];
+}
+
+char	*parse_input_ls(char *input)
 {
 	int	i;
 
 	i = 0;
 	while (input[i])
 	{
+		if (input[i] == ';' && input[i + 1] == '\0')
+		{
+			input[i] = '\0';
+			break ;
+		}
+		if (input[i] == ';' && input[i + 1] != '\0')
+		{
+			input[i] = '\0';
+			break ;
+		}
 		if (input[i] == ';' && (input[i - 1] != ' '))
 		{
 			input[i] = '\0';
@@ -29,15 +49,10 @@ char	*parse_input_clear(char *input)
 	return (input);
 }
 
-void	ft_clear(char *input)
+void	clean_up_ls(t_ls *ls)
 {
-	char	**args;
-
-	input = parse_input_clear(input);
-	args = ft_split(input, ' ');
-	if (args[1] != NULL)
-		printf("🦇 (¬‿¬) 🦇: Usage: clear\n");
-	else
-		system("clear");
-	free_split(args);
+	if (ls->args)
+		free_split(ls->args);
+	if (ls->dir)
+		closedir(ls->dir);
 }

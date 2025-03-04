@@ -1,17 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/27 19:24:19 by tmilin            #+#    #+#             */
+/*   Updated: 2025/02/27 19:24:20 by tmilin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-int	ft_strlonglen(char **s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
+int		g_status = 0;
 
 void	init_struct(t_ee *ee)
 {
+	ee->error_exit = 0;
+	ee->reset_sigint = 0;
+	ee->code_exit = 0;
 	ee->minishell_check = 0;
 	ee->change_confirmed = 0;
 	ee->copy_pwd = NULL;
@@ -27,5 +34,8 @@ void	init_struct(t_ee *ee)
 	ee->command_with_and = 0;
 	ee->command_with_or = 0;
 	ee->confirmed_command = 0;
-	ee->space = 0;
+	ee->signal = 0;
+	ee->save_result = 0;
+	ee->block_home = 0;
+	ee->copy_home = NULL;
 }

@@ -1,23 +1,24 @@
-SRCS        = src/main.c src/init.c src/builtins/exit.c src/builtins/pwd.c src/builtins/cd.c src/builtins/cd2.c \
-			src/builtins/ft_ls.c src/builtins/ft_clear.c src/builtins/ft_env.c src/builtins/ft_wc.c \
-			src/builtins/ft_unset.c src/builtins/ft_export.c src/builtins/ft_echo.c
-OBJ_DIR     = obj
-OBJS        = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
-NAME        = minishell
-CC          = cc
-RM          = rm -f
-CFLAGS      = -Wall -Wextra -Werror
-CPPFLAGS    = -Iinc -Isrc
-LDFLAGS     = -Llibft
-LDLIBS      = -lft -lreadline -lhistory
+NAME = minishell
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+CPPFLAGS = -Iinc -Isrc
+SRC_DIR = src
+OBJ_DIR = obj
+LIBFT_DIR = libft
+LDFLAGS = -L$(LIBFT_DIR)
+LDLIBS = -lft -lreadline -lhistory
+SRCS = $(wildcard $(SRC_DIR)/**/*.c $(SRC_DIR)/*.c)
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@make -C libft
+
+	@make -C $(LIBFT_DIR)
 	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $(NAME)
 
-$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
@@ -25,13 +26,14 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 clean:
-	@make clean -C libft
-	$(RM) $(OBJS)
-	$(RM) -r $(OBJ_DIR)
+	@make clean -C $(LIBFT_DIR)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	$(RM) $(NAME)
+	@make fclean -C $(LIBFT_DIR)
+	rm -f $(NAME)
 
 re: fclean all
 
 .PHONY: all clean fclean re
+

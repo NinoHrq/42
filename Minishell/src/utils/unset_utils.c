@@ -1,43 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_clear.c                                         :+:      :+:    :+:   */
+/*   unset_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/27 19:25:26 by tmilin            #+#    #+#             */
-/*   Updated: 2025/02/27 19:25:27 by tmilin           ###   ########.fr       */
+/*   Created: 2025/02/27 19:39:08 by tmilin            #+#    #+#             */
+/*   Updated: 2025/02/27 19:39:09 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*parse_input_clear(char *input)
+void	norminette_pop_shove_it(t_ee *ee)
 {
-	int	i;
-
-	i = 0;
-	while (input[i])
-	{
-		if (input[i] == ';' && (input[i - 1] != ' '))
-		{
-			input[i] = '\0';
-			break ;
-		}
-		i++;
-	}
-	return (input);
+	unsetenv("PATH");
+	ee->path_is_not_able = 1;
 }
 
-void	ft_clear(char *input)
+void	norminette_hardflip(t_unset_data *data, t_ee *ee)
 {
-	char	**args;
+	data->new_envp[data->k] = ft_strdup(ee->envp[data->i]);
+	data->k++;
+}
 
-	input = parse_input_clear(input);
-	args = ft_split(input, ' ');
-	if (args[1] != NULL)
-		printf("🦇 (¬‿¬) 🦇: Usage: clear\n");
-	else
-		system("clear");
-	free_split(args);
+void	norminette_heelflip(t_ee *ee)
+{
+	unsetenv("PATH");
+	ee->lock_path = 1;
 }

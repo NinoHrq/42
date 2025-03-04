@@ -1,43 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_clear.c                                         :+:      :+:    :+:   */
+/*   exit_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/27 19:25:26 by tmilin            #+#    #+#             */
-/*   Updated: 2025/02/27 19:25:27 by tmilin           ###   ########.fr       */
+/*   Created: 2025/02/27 19:32:27 by tmilin            #+#    #+#             */
+/*   Updated: 2025/02/27 19:32:29 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*parse_input_clear(char *input)
+void	handle_exit_syntax_error(void)
 {
-	int	i;
-
-	i = 0;
-	while (input[i])
-	{
-		if (input[i] == ';' && (input[i - 1] != ' '))
-		{
-			input[i] = '\0';
-			break ;
-		}
-		i++;
-	}
-	return (input);
+	ft_printf("🛠️_(>_<;)_🛠️   : syntax error near unexpected token `;;'\n");
 }
 
-void	ft_clear(char *input)
+void	handle_exit_numeric_error(char **args, t_ee *ee, t_token *exit)
 {
-	char	**args;
-
-	input = parse_input_clear(input);
-	args = ft_split(input, ' ');
-	if (args[1] != NULL)
-		printf("🦇 (¬‿¬) 🦇: Usage: clear\n");
-	else
-		system("clear");
+	ft_printf("🏃 exit\n");
+	ft_printf("🚧_(⊙_⊙;)_🚧 : exit: %s: numeric argument required\n", args[1]);
 	free_split(args);
+	free(exit);
+	ee->code_exit = 2;
+	ee->minishell_check = 1;
 }
