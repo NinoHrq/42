@@ -6,13 +6,13 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:31:52 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/28 19:45:57 by nharraqi         ###   ########.fr       */
+/*   Updated: 2025/03/07 19:19:21 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	ft_atol(const char *str)
+long	ft_atol(const char *str, t_param *param)
 {
 	int		i;
 	long	number;
@@ -22,11 +22,17 @@ long	ft_atol(const char *str)
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
 	if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))
-		error_quit("The input is not a correct digit");
+	{
+		error_quit("The input is not a correct digit", param);
+		return (-1);
+	}
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-			error_quit("Give me only positive values dummy!");
+		{
+			error_quit("Give me only positive values dummy!", param);
+			return (-1);
+		}
 		i++;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
@@ -35,7 +41,10 @@ long	ft_atol(const char *str)
 		i++;
 	}
 	if (number > INT_MAX || number < 0)
-		error_quit("Number is too large");
+	{
+		error_quit("Number is too large", param);
+		return (-1);
+	}
 	return (number);
 }
 
@@ -43,18 +52,18 @@ void	parse_input(t_param **param, char **av)
 {
 	int	i;
 
-	(*param)->philo_nbr = ft_atol(av[1]);
-	(*param)->time_to_die = ft_atol(av[2]);
-	(*param)->time_to_eat = ft_atol(av[3]);
-	(*param)->time_to_sleep = ft_atol(av[4]);
+	(*param)->philo_nbr = ft_atol(av[1], *param);
+	(*param)->time_to_die = ft_atol(av[2], *param);
+	(*param)->time_to_eat = ft_atol(av[3], *param);
+	(*param)->time_to_sleep = ft_atol(av[4], *param);
 	if (av[5])
-		(*param)->nbr_limit_meals = ft_atol(av[5]);
+		(*param)->nbr_limit_meals = ft_atol(av[5], *param);
 	else
 		(*param)->nbr_limit_meals = -1;
 	pthread_mutex_init(&(*param)->protect_printf, NULL);
 	(*param)->forks = malloc(sizeof(pthread_mutex_t) * (*param)->philo_nbr);
 	if (!(*param)->forks)
-		error_quit("Malloc failed");
+		error_quit("Malloc failed", *param);
 	i = -1;
 	while (++i < (*param)->philo_nbr)
 		pthread_mutex_init(&(*param)->forks[i], NULL);

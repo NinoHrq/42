@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:06:13 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/29 14:41:15 by nharraqi         ###   ########.fr       */
+/*   Updated: 2025/03/07 19:20:49 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-// Structures
 typedef struct s_philo
 {
 	int				id;
@@ -35,7 +34,7 @@ typedef struct s_philo
 	struct s_param	*param;
 }					t_philo;
 
-typedef struct s_param // contient l'ensemble des data
+typedef struct s_param
 {
 	int				philo_nbr;
 	int				time_to_die;
@@ -54,10 +53,10 @@ typedef struct s_param // contient l'ensemble des data
 // parsing.c
 void				parse_input(t_param **table, char **av);
 int					parse_philo(t_param *param, t_philo *philo);
-long				ft_atol(const char *str);
+long				ft_atol(const char *str, t_param *param);
 
 // utils.c
-void				error_quit(const char *error);
+void				error_quit(const char *error, t_param *param);
 long				get_current_time(void);
 void				only_one(t_param *param, t_philo *philo, long time);
 void				printd_dead(t_param *param, t_philo *philo, long time);
