@@ -6,16 +6,17 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 19:30:57 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/29 14:42:47 by nharraqi         ###   ########.fr       */
+/*   Updated: 2025/03/08 10:53:29 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	error_quit(const char *error)
+void	error_quit_param(const char *error, t_param *param)
 {
 	printf("%s\n", error);
-	exit(EXIT_FAILURE);
+	free(param);
+	returne(0);
 }
 
 long	get_current_time(void)
@@ -40,4 +41,10 @@ void	only_one(t_param *param, t_philo *philo, long time)
 	usleep(param->time_to_die * 1e3);
 	time = get_current_time() - param->start_simulation;
 	printf("%ld %d died\n", time, philo->id);
+}
+
+void	returne(int i)
+{
+	if (i == 0)
+		exit(0);
 }

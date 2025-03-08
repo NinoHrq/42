@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 21:05:54 by nharraqi          #+#    #+#             */
-/*   Updated: 2024/11/29 14:39:19 by nharraqi         ###   ########.fr       */
+/*   Updated: 2025/03/08 10:53:42 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,20 @@ void	free_all(t_param *param, t_philo *philo)
 	free(philo);
 }
 
+void	free_param(t_param *param)
+{
+	int	i;
+
+	i = -1;
+	while (++i < param->philo_nbr)
+		pthread_mutex_destroy(&param->forks[i]);
+	pthread_mutex_destroy(&param->protect_dead);
+	pthread_mutex_destroy(&param->protect_forks);
+	pthread_mutex_destroy(&param->protect_printf);
+	free(param->forks);
+	free(param);
+}
+
 int	main(int ac, char **av)
 {
 	int			i;
@@ -62,6 +76,7 @@ int	main(int ac, char **av)
 	parse_philo(param, philo);
 	while (++i < param->philo_nbr)
 		pthread_join(philo[i].thread, NULL);
-	free_all(param, philo);
+	if (param)
+		free_all(param, philo);
 	return (0);
 }
