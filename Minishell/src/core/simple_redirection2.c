@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_redirection2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:29:23 by tmilin            #+#    #+#             */
-/*   Updated: 2025/02/27 19:29:24 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/04 16:38:35 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	handle_child_simple_process(t_redir_simple *hr, t_ee *ee)
 	if (handle_heredoc(hr, ee) == EXIT_FAILURE)
 		exit(EXIT_FAILURE);
 	handle_otpt_redirection(hr);
-	execv(hr->path, hr->split_execv);
+	cumulate_token(hr->input_execv, ee);
 	exit(EXIT_SUCCESS);
 }
 

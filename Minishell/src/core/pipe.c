@@ -6,7 +6,7 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:28:52 by tmilin            #+#    #+#             */
-/*   Updated: 2025/03/03 17:42:20 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/07 21:12:17 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	execute_pipeline(char *input, t_ee *ee)
 		return (-1);
 	init_pipe_struct(piipe);
 	input = parse_input_pipeline(input);
-	piipe->commands = ft_split(input, '|');
+	piipe->commands = ft_splittt(input, '|');
 	while (piipe->commands[piipe->i])
 		do_what_pipe_need(pipe_fd, piipe, ee);
 	if (piipe->prev_fd != -1)

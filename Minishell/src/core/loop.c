@@ -6,7 +6,7 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:28:44 by tmilin            #+#    #+#             */
-/*   Updated: 2025/03/03 16:55:14 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/04 12:51:48 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	all_what_is_need(char *tmp, t_loop *loop, t_ee *ee)
 {
 	if (check_tmp_not_null(tmp, ee))
 	{
+		free(tmp);
 		free(loop);
 		return (1);
 	}

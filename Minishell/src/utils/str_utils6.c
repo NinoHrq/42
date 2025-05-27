@@ -6,7 +6,7 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:54:03 by tmilin            #+#    #+#             */
-/*   Updated: 2025/03/03 16:54:03 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/07 21:19:59 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	remoov_quote__(char **args)
 
 int	found_single_or_double_quote(char *input)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (input[i])
@@ -96,10 +96,9 @@ int	found_single__(char *input)
 			else if (quote_type == input[i])
 				quote_type = 0;
 		}
-		if (quote_type == 0)
+		if (quote_type == 0 && (input[i] == '<' || input[i] == '>'))
 		{
-			if ((input[i] == '<' || input[i + 1] == '>'))
-				found_redir = 1;
+			found_redir = 1;
 		}
 		i++;
 	}

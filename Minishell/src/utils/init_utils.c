@@ -6,7 +6,7 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:36:01 by tmilin            #+#    #+#             */
-/*   Updated: 2025/03/03 18:35:56 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/04 16:37:36 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	norminette_nosegrind(t_redir_simple *hr, char *input)
 {
 	hr->input_execv = parse_exev_input(input);
 	hr->if_need_sep = unstick_to_re_stick(input);
-	hr->split_execv = ft_split(hr->input_execv, ' ');
-	hr->split_in = ft_split(hr->if_need_sep, ' ');
+	hr->split_execv = ft_splittt(hr->input_execv, ' ');
+	hr->split_in = ft_splittt(hr->if_need_sep, ' ');
 	if (!hr->split_execv || !hr->split_execv[0] || !hr->split_in
 		|| !hr->split_in[0])
 	{

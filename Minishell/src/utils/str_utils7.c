@@ -6,7 +6,7 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:53:17 by tmilin            #+#    #+#             */
-/*   Updated: 2025/03/03 18:51:12 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/08 11:55:04 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@ void	verif_what_after_redirection_utils(char *input, int *i)
 {
 	while (input[*i])
 	{
+		if (input[*i] == '"' || input[*i] == '\'')
+		{
+			(*i)++;
+			while (input[*i] && (input[*i] != '"' || input[*i] != '\''))
+				(*i)++;
+			if ((input[*i] == '"' || input[*i] == '\'') && input[*i + 1])
+				(*i)++;
+			else
+				break ;
+		}
 		if ((input[*i] == '<' || input[*i] == '>') && (input[*i + 1] == '<'
 				|| input[*i + 1] == '>'))
 		{
@@ -52,7 +62,7 @@ int	parse_tmp(char *tmp, t_loop *loop, t_ee *ee)
 {
 	if (check_syntax_error(tmp, ee) || check_unexpected_semicolon(tmp, ee)
 		|| check_for_no_double(tmp, ee) || verif_what_after_redirection(tmp, ee)
-		|| *tmp == '\0')
+		|| *tmp == '\0' || black_hole(tmp, ee))
 	{
 		free(tmp);
 		cleanup_loop(loop);

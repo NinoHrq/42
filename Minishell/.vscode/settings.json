@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "cstdio": "c",
-        "minishell.h": "c",
-        "path_utils3.C": "cpp",
-        "cstdlib": "c",
-        "str_utils5.C": "cpp"
-    }
-}

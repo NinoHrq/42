@@ -6,7 +6,7 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:27:56 by tmilin            #+#    #+#             */
-/*   Updated: 2025/03/03 17:59:22 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/08 11:35:20 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,14 @@ void	execute_external_command(char *command, t_ee *ee)
 	args = ft_splittt(command, ' ');
 	remoov_quote__(args);
 	tmp = parse_dollarsss(args, ee);
-	if (args)
-		free_split(args);
+	remoov_single__quote__(tmp);
+	free_split(args);
 	args = tmp;
 	if (args[0])
+	{
 		bilbon_the_saquet(args, command, ee);
+	}
 	else
 		ee->confirmed_command = 1;
-	if (args)
-		free_split(args);
+	free_split(args);
 }

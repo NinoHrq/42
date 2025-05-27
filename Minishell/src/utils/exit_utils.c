@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:32:38 by tmilin            #+#    #+#             */
-/*   Updated: 2025/02/27 19:32:41 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/07 20:11:17 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ void	handle_exit_with_numeric_value(char **args, t_ee *ee, t_token *exit)
 {
 	ft_printf("🏃 exit\n");
 	if (check_atoi_overflow(args[1]) == 1)
+	{
+		ft_printf("🚧_(⊙_⊙;)_🚧 : exit: %s: numeric argument required\n", args[1]);
 		ee->code_exit = 2;
+	}
 	else
 		ee->code_exit = ft_atoi(args[1]);
 	free_split(args);

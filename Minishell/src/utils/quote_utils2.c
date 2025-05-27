@@ -6,96 +6,147 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:49:03 by tmilin            #+#    #+#             */
-/*   Updated: 2025/03/03 18:49:15 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/07 20:33:59 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	init_normalizer(t_quote_normalizer *q)
+int	check_quotesss(char *input)
 {
-	q->i = 0;
-	q->quote_type = '\0';
-	q->k = 0;
-}
+	int	i;
 
-int	check_quotes(char *arg, t_quote_normalizer *q)
-{
-	int	len;
-
-	len = strlen(arg);
-	if (len >= 2 && (arg[0] == '"' || arg[0] == '\'') && arg[0] == arg[len - 1])
+	i = 0;
+	while (input[i])
 	{
-		q->quote_type = arg[0];
-		return (1);
+		if (input[i] == '"' || input[i] == '\'')
+			return (1);
+		i++;
 	}
 	return (0);
 }
 
-void	process_quotes(char *arg, t_quote_normalizer *q)
+char	find_first_quote(char *arg)
 {
-	int	len;
+	int	j;
+
+	j = 0;
+	if (!arg)
+		return ('\0');
+	while (arg[j])
+	{
+		if (arg[j] == '\'' || arg[j] == '"')
+		{
+			return (arg[j]);
+		}
+		j++;
+	}
+	return ('\0');
+}
+
+char	*remove_internal_quotes(char *arg, char quote)
+{
+	int		len;
+	int		k;
+	int		j;
+	char	*new_str;
 
 	len = strlen(arg);
-	q->result[q->k++] = arg[0];
-	q->j = 1;
-	while (q->j < len - 1)
+	k = 0;
+	j = 0;
+	new_str = (char *)malloc(len + 3);
+	while (arg[j])
 	{
-		if ((q->quote_type == '"' && arg[q->j] == '\'')
-			|| (q->quote_type == '\'' && arg[q->j] == '"'))
-		{
-			q->j++;
-			continue ;
-		}
-		q->result[q->k++] = arg[q->j];
-		q->j++;
+		if (arg[j] != '\'' && arg[j] != '"')
+			new_str[k++] = arg[j];
+		j++;
 	}
-	q->result[q->k++] = arg[len - 1];
-	q->result[q->k] = '\0';
+	new_str[k] = '\0';
+	if (quote != '\0')
+	{
+		memmove(new_str + 1, new_str, k);
+		new_str[0] = quote;
+		new_str[k + 1] = quote;
+		k++;
+	}
+	new_str[k + 1] = '\0';
+	return (new_str);
 }
 
 void	normalize_quotes(char **args)
 {
-	t_quote_normalizer	q;
+	int		i;
+	char	*new_str;
+	char	quote;
 
-	init_normalizer(&q);
-	while (args[q.i])
+	i = 0;
+	if (!args)
+		return ;
+	while (args[i])
 	{
-		if (check_quotes(args[q.i], &q))
+		if (check_quotesss(args[i]))
 		{
-			process_quotes(args[q.i], &q);
-			strcpy(args[q.i], q.result);
+			quote = find_first_quote(args[i]);
+			new_str = remove_internal_quotes(args[i], quote);
+			if (new_str)
+			{
+				free(args[i]);
+				args[i] = new_str;
+			}
 		}
-		q.i++;
+		i++;
 	}
 }
 
-/*void normalize_quotes(char **args)
+/*void	normalize_quotes(char **args)
 {
-	int i = 0;
-	while (args[i])
+	char	*arg;
+	int		len;
+	char	quote;
+	char	*new_str;
+	int		k;
+
+	if (!args)
+		return ;
+
+	for (int i = 0; args[i] != NULL; i++)
 	{
-		int j = 0, k = 0;
-		char quote_type = '\0';
-		char result[2048];
-		int len = strlen(args[i]);
-		if (len >= 2 && (args[i][0] == '"' || args[i][0] == '\'')
-				&& args[i][0] == args[i][len - 1])
-			quote_type = args[i][0];
-		if (quote_type)
+		if (check_quotesss(args[i]))
 		{
-			result[k++] = args[i][0];
-			for (j = 1; j < len - 1; j++)
+			arg = args[i];
+			len = strlen(arg);
+			if (len == 0)
+				continue ;
+			quote = '\0';
+			for (int j = 0; j < len; j++)
 			{
-				if ((quote_type == '"' && args[i][j] == '\'') ||
-					(quote_type == '\'' && args[i][j] == '"'))
-					continue ;
-				result[k++] = args[i][j];
+				if (arg[j] == '\'' || arg[j] == '"')
+				{
+					quote = arg[j];
+					break ;
+				}
 			}
-			result[k++] = args[i][len - 1];
-			result[k] = '\0';
-			strcpy(args[i], result);
+			new_str = (char *)malloc(len + 3);
+			if (!new_str)
+				return ;
+			k = 0;
+			for (int j = 0; j < len; j++)
+			{
+				if (arg[j] != '\'' && arg[j] != '"')
+				{
+					new_str[k++] = arg[j];
+				}
+			}
+			if (quote != '\0')
+			{
+				memmove(new_str + 1, new_str, k);
+				new_str[0] = quote;
+				new_str[k + 1] = quote;
+				k++;
+			}
+			new_str[k + 1] = '\0';
+			free(args[i]);
+			args[i] = new_str;
 		}
-		i++;
 	}
 }*/

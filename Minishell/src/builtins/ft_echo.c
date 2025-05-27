@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:25:36 by tmilin            #+#    #+#             */
-/*   Updated: 2025/02/27 19:25:37 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/08 12:20:58 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,24 @@ char	**parse_dollarsss(char **args, t_ee *ee)
 {
 	int		i;
 	char	**changed_args;
+	char	*tmp;
 
 	i = 0;
 	changed_args = malloc(sizeof(char *) * (sizeof(args) + 1));
-	if (!changed_args)
-		return (NULL);
 	while (args[i])
 	{
 		if (ft_strcmp(args[i], "$?") == 0)
 		{
-			do_what_dq_do(ee);
-			break ;
+			tmp = ft_itoa(ee->signal);
+			changed_args[i] = ft_strdup(tmp);
+			free(tmp);
 		}
 		else if (is_single_quoted(args[i]) && ft_strcmp(args[i], "$?"))
-			changed_args[i] = strdup(args[i]);
+			changed_args[i] = ft_strdup(args[i]);
 		else if (args[i][0] == '$' && ft_strcmp(args[i], "$?"))
 			changed_args[i] = get_env_value(args[i] + 1, ee);
 		else
-			changed_args[i] = strdup(args[i]);
+			changed_args[i] = ft_strdup(args[i]);
 		i++;
 	}
 	changed_args[i] = NULL;
@@ -70,7 +70,9 @@ void	printf_echo(char **args, t_ee *ee)
 	while (args[i])
 	{
 		if (ft_strcmp(args[i], "$?") == 0)
+		{
 			ft_printf("%d", ee->signal);
+		}
 		else
 		{
 			if (confirme_n(args[i]) != 1)
@@ -92,14 +94,19 @@ void	ft_echo(char *input, t_ee *ee)
 
 	no_newline = false;
 	args = ft_splittt(input, ' ');
+	normalize_quotes(args);
 	remoov_quote__(args);
 	tmp = parse_dollarsss(args, ee);
+	parse_dollars_input(&tmp, ee);
+	remoov_single__quote__(tmp);
 	free_split(args);
 	args = tmp;
 	if (args[1] && confirme_n(args[1]) == 1)
 		no_newline = true;
 	printf_echo(args, ee);
 	if (!no_newline)
+	{
 		ft_printf("\n");
+	}
 	free_split(args);
 }

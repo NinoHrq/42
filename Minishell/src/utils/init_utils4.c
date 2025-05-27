@@ -6,7 +6,7 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:02:39 by tmilin            #+#    #+#             */
-/*   Updated: 2025/03/03 19:02:39 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/04 16:44:24 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,12 @@ int	i_want_to_sing_a_song_hiihi(t_redir_handler *hr)
 		return (1);
 	}
 	return (0);
+}
+
+void	init_parser(t_pparser *p)
+{
+	p->i = 0;
+	p->j = 0;
+	p->quote = '\0';
+	p->return_input = NULL;
 }

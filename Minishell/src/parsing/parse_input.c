@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:30:35 by tmilin            #+#    #+#             */
-/*   Updated: 2025/02/27 19:30:36 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/04 16:46:27 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,50 @@ char	*parse_input_pipeline(char *input)
 
 char	*parse_exev_input(char *tmp_in)
 {
+	t_pparser	p;
+
+	init_parser(&p);
+	while (tmp_in && tmp_in[p.i])
+	{
+		if (tmp_in[p.i] == '"' || tmp_in[p.i] == '\'')
+			skip_quoted_part(tmp_in, &p);
+		if (tmp_in[p.i] == '>' || tmp_in[p.i] == '<')
+			break ;
+		p.i++;
+	}
+	p.return_input = malloc(sizeof(char) * (p.i + 1));
+	if (!p.return_input)
+		return (NULL);
+	while (p.j < p.i)
+	{
+		p.return_input[p.j] = tmp_in[p.j];
+		p.j++;
+	}
+	p.return_input[p.j] = '\0';
+	return (p.return_input);
+}
+
+/*char	*parse_exev_input(char *tmp_in)
+{
 	int		i;
 	int		j;
 	char	*return_input;
+	char	quote;
+	int		i;
 
 	i = 0;
 	j = 0;
 	while (tmp_in && tmp_in[i])
 	{
+		if (tmp_in[i] == '"' || tmp_in[i] == '\'')
+		{
+			quote = tmp_in[i];
+			i++;
+			while (tmp_in[i] && tmp_in[i] != quote)
+				i++;
+			if (tmp_in[i] == quote)
+				i++;
+		}
 		if (tmp_in[i] == '>' || tmp_in[i] == '<')
 			break ;
 		i++;
@@ -91,8 +127,7 @@ char	*parse_exev_input(char *tmp_in)
 	}
 	return_input[j] = '\0';
 	return (return_input);
-}
-
+}*/
 char	*parse_input_exit(char *input, t_token *exit)
 {
 	int	i;

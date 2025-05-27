@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:24:19 by tmilin            #+#    #+#             */
-/*   Updated: 2025/02/27 19:24:20 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/04 19:45:09 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int		g_status = 0;
 
 void	init_struct(t_ee *ee)
 {
+	ee->single_quote = 0;
 	ee->error_exit = 0;
 	ee->reset_sigint = 0;
 	ee->code_exit = 0;

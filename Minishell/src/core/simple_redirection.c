@@ -6,7 +6,7 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:29:46 by tmilin            #+#    #+#             */
-/*   Updated: 2025/03/03 19:46:15 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/04 16:29:39 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ int	process_heredoc_entries(t_redir_simple *hr, t_ee *ee)
 		for (int i = 1; i < last_name; i++)
 		{
 			if (strcmp(split_in[i], "<<") == 0)
-			{
+			{wc -l
 				fd = open_available(&tmpfilenames[heredoc_count]);
 				if (fd < 0)
 				{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:38:56 by tmilin            #+#    #+#             */
-/*   Updated: 2025/02/27 19:38:57 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/08 11:56:40 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ int	check_for_no_double(char *input, t_ee *ee)
 	i = 0;
 	while (input[i])
 	{
-		if ((input[i] == '|' && input[i + 1] == '|') || (input[i] == '&'
+		if (input[i] == '"' || input[i] == '\'')
+			the_really_last_function(input, &i);
+		else if ((input[i] == '|' && input[i + 1] == '|') || (input[i] == '&'
 				&& input[i + 1] == '&'))
 		{
 			i += 2;

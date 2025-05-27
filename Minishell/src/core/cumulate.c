@@ -6,7 +6,7 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:27:44 by tmilin            #+#    #+#             */
-/*   Updated: 2025/03/03 19:39:54 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/07 21:18:55 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int	process_segment(char *segment, t_ee *ee)
 	result = 0;
 	if (find_parenthesis(segment) && found_single_or_double_quote(input) == 0)
 		its_just_a_parenthese(segment, ee);
-	else if (find_pipe(input) && !find_or(input) && !find_redirection(input))
+	else if (find_pipe(input) && !find_or(input) && !find_redirection(input)
+		&& found_single_pipe__(input))
 		execute_pipeline(input, ee);
 	else if (find_redirection_and_pipe(input)
 		&& found_single_or_double_quote(input) == 0)

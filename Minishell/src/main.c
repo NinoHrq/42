@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:24:00 by tmilin            #+#    #+#             */
-/*   Updated: 2025/02/27 19:24:02 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/08 12:43:38 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,3 +37,22 @@ int	main(int ac, char **av, char **envp)
 	exit(status);
 	return (0);
 }
+
+/*
+
+echo "cat << e |wc -l | ls > lol || pwd < Makefile | ./minishell" >> ls
+
+cat Makefile | wc -l && (pwd && ls && cat Makefile | lol|| cat <<e > lol && kek
+	&& (lol)) && ls
+	
+ls && pwd && koke || ls && (ls && (cat Makefile |wc -l && (ppp || w )&& kwk)
+	&& ls) || echo fini
+	
+cat << e << o << f> lol
+
+cat Makefile | wc -l && (pwd && ls && cat Makefile | lol|| cat <<e > lol ) && ls
+
+(cat Makefile | wc -l && cat Makefile|wc -l && (cat << e > lol || kek))	&& pwd
+
+ls && (lol || "$qwer")
+	|| pwd                                                                  */

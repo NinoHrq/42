@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmilin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:26:09 by tmilin            #+#    #+#             */
-/*   Updated: 2025/02/27 19:26:10 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/07 20:34:52 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,17 @@ void	ft_exit(char *input, t_ee *ee)
 {
 	t_token	*exit;
 	char	**args;
+	char	**tmp;
 
 	exit = malloc(sizeof(t_token));
 	exit->token = 0;
 	input = parse_input_exit(input, exit);
-	args = ft_split(input, ' ');
+	args = ft_splittt(input, ' ');
+	remoov_quote__(args);
+	tmp = parse_dollarsss(args, ee);
+	if (args)
+		free_split(args);
+	args = tmp;
 	if (check_simple_exit(input) == 0 && args[1] == NULL)
 	{
 		handle_exit_no_args(args, ee, exit);

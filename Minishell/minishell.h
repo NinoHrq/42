@@ -6,7 +6,7 @@
 /*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 19:39:37 by tmilin            #+#    #+#             */
-/*   Updated: 2025/03/03 18:45:55 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/03/08 11:46:14 by tmilin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,16 @@ typedef struct s_loop
 	char			*input;
 	pid_t			pid;
 }					t_loop;
+
+typedef struct s_parser
+{
+	int				i;
+	int				j;
+	char			*tmp;
+	char			*kekw;
+	char			*new_value;
+	int				new_len;
+}					t_parser;
 
 typedef struct s_pipe
 {
@@ -170,6 +180,7 @@ typedef struct s_separator_handler
 	int				j;
 	int				count_how_many_sep;
 	char			*good_sep;
+	char			quote;
 }					t_separator_handler;
 
 typedef struct s_redir
@@ -177,13 +188,21 @@ typedef struct s_redir
 	int				command_fail;
 }					t_redir;
 
+typedef struct s_pparser
+{
+	int				i;
+	int				j;
+	char			quote;
+	char			*return_input;
+}					t_pparser;
+
 typedef struct s_quote_normalizer
 {
 	int				i;
 	int				j;
 	int				k;
 	char			quote_type;
-	char			result[MAX_LEN];
+	char			*result;
 }					t_quote_normalizer;
 
 typedef struct s_redir_handler
@@ -297,6 +316,7 @@ typedef struct s_env_expansion
 
 typedef struct s_envp_copy
 {
+	int				single_quote;
 	int				error_exit;
 	int				reset_sigint;
 	int				code_exit;
@@ -335,6 +355,12 @@ void				ft_echo(char *input, t_ee *ee);
 
 // ------------------------------ //
 
+int					f_q(char *input);
+int					f_sq(char *input);
+void				skip_quoted_part(char *tmp_in, t_pparser *p);
+void				init_parser(t_pparser *p);
+void				skip_separators(const char *str, char sep, t_tableautt *tt);
+void				parse_dollars_input(char ***input, t_ee *ee);
 int					verif_what_after_redirection(char *input, t_ee *ee);
 int					parse_tmp(char *tmp, t_loop *loop, t_ee *ee);
 void				process_quotes(char *arg, t_quote_normalizer *q);
@@ -342,7 +368,6 @@ int					check_quotes(char *arg, t_quote_normalizer *q);
 void				init_normalizer(t_quote_normalizer *q);
 char				**parse_dollarsss(char **args, t_ee *ee);
 void				remoov_quote__(char **args);
-int					f_q(char *input);
 void				verif_what_after_redirection_utils(char *input, int *i);
 int					found_single__(char *input);
 int					found_single_or_double__(char *input);
@@ -365,6 +390,8 @@ int					calcul_check_path(char **check_path);
 void				check_path_in_or_with_pipe(char *input, t_ee *ee);
 char				*save_initial_path(t_ee *ee);
 char				**copy_envp(char **envp);
+int					black_hole(char *tmp, t_ee *ee);
+void				remoov_single__quote__(char **args);
 void				init_struct_loop(t_loop *loop);
 void				loop(char *tmp, t_ee *ee);
 char				*parse_env_value(char *value);
@@ -440,11 +467,13 @@ int					check_syntax_error(const char *tmp, t_ee *ee);
 int					check_unexpected_semicolon(char *tmp, t_ee *ee);
 int					find_trap(char *input);
 void				cleanup_loop(t_loop *loop);
+int					found_single_pipe__(char *input);
 int					check_tmp_not_null(char *tmp, t_ee *ee);
 void				for_norminette(t_ee *ee);
 void				its_just_a_parenthese(char *input, t_ee *ee);
 char				*find_env_var(const char *var_name, t_ee *ee);
 char				*expand_variable(char *input, t_ee *ee);
+void				the_really_last_function(char *input, int *i);
 char				*handle_quotes(char *input, t_ee *ee);
 void				handle_sigint(int sig);
 void				catch_signal(t_ee *ee);
@@ -602,7 +631,5 @@ int					handle_error_piperedi(const char *m, t_pipeline *p,
 						char *t);
 void				handle_exit_too_many_args(t_token *exit, char **args,
 						t_ee *ee);
-
-// cat "$PATH"
 
 #endif
