@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   skip_spaces.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 15:42:11 by nharraqi          #+#    #+#             */
-/*   Updated: 2025/06/10 15:59:36 by nharraqi         ###   ########.fr       */
+/*   Created: 2025/06/10 17:08:21 by nharraqi          #+#    #+#             */
+/*   Updated: 2025/06/10 17:08:48 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+char	*skip_spaces(char *str)
 {
-    t_game game;
-    
-    if(ac == 2)
-    {
-        if (parse_av(av[1]) == 0)
-        {
-            init_game(&game, av[1]);
-        }
-    }
+	while (*str == ' ' || *str == '\t')
+		str++;
+	return (str);
 }

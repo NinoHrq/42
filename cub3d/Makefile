@@ -30,9 +30,11 @@ OBJ_BONUS_DIR = ./obj_bonus
 
 # Source files for cub3D
 SRCS = main.c \
-		utils.c \
+		init_get_doc.c \
+		init_get_doc2.c \
 		parsing1.c \
 		init1.c \
+		verify_info.c \
 		free.c \
 		manage_key.c \
 		raycast_1.c \

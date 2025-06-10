@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmilin <tmilin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:42:07 by tmilin            #+#    #+#             */
-/*   Updated: 2024/10/18 12:27:39 by tmilin           ###   ########.fr       */
+/*   Updated: 2025/06/10 17:09:13 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int					ft_check_type(const char type, va_list args);
 int					ft_printf(const char *str, ...);
 // char_fonctions
 char				*ft_itoa(int n);
+char				*skip_spaces(char *str);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strdup(char *src);
 char				*ft_strjoin(char *s1, char *s2);
@@ -79,6 +80,8 @@ void				*ft_memcpy(void *dest, const void *src, size_t n);
 void				*ft_memmove(void *dest, const void *src, size_t n);
 void				*ft_memchr(const void *s, int c, size_t n);
 void				*ft_calloc(size_t nmemb, size_t size);
+void				*ft_realloc(void *old_ptr, size_t old_size, size_t new_size);
+
 // size_t_fonctions
 size_t				ft_strlen(const char *s);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);

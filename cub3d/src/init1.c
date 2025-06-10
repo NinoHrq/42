@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 18:19:27 by nharraqi          #+#    #+#             */
-/*   Updated: 2025/06/03 19:42:05 by nharraqi         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:35:56 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void init_game(t_game *game, char *s)
     init_player(game);
 	init_textures(game);
 	init_colors(game);
+	init_layout(game, s);
+	
 	
 }
 
@@ -49,4 +51,14 @@ void init_colors(t_game *game)
 {
 	game->floor_color[1] = -1;
 	game->ceiling_color[1] = -1;
+}
+
+void init_layout(t_game *game, char *s)
+{
+	game->start_map = 0;
+	game->doc = get_doc(s);
+	if(!game->doc)
+		exit(1);
+	verify_info(game);
+	parse_
 }

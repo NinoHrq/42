@@ -6,7 +6,7 @@
 /*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:47:26 by nharraqi          #+#    #+#             */
-/*   Updated: 2025/06/03 19:47:00 by nharraqi         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:32:32 by nharraqi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,25 @@ void init_game(t_game *game, char *s);
 void init_player(t_game *game);
 void init_textures(t_game *game);
 void init_colors(t_game *game);
+
+//---------------init_get_doc.c-------------------//
+char	**get_doc(char *filename);
+int 	init_ctx(char *filename, t_doc *ctx);
+void	initialize_context(t_doc *ctx, char *filename);
+char 	**allocate_map(int size);
+char 	**reallocate_map(char **map, int pre_size, int new_size);
+
+//---------------init_get_doc2.c-------------------//
+void process_line(t_doc *ctx);
+void cleaning_up(t_doc *ctx);
+void closing_fd(t_doc *ctx);
+
+//---------------verify_info.c-------------------//
+void verify_info(t_game *game);
+void free_game_texture(t_game *game, char *txt);
+void	free_tab(char **tab);
+
+
 
 /*void init_player(t_player *player);
 int key_release(int keycode, t_player *player);
