@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nharraqi <nharraqi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 16:47:26 by nharraqi          #+#    #+#             */
-/*   Updated: 2025/06/10 17:32:32 by nharraqi         ###   ########.fr       */
+/*   Updated: 2025/07/17 02:20:48 by marvin           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -192,18 +192,6 @@ typedef struct s_parse_state
 	int			digit;
 }				t_parse_state;
 
-//---------------parsing1.c-------------------//
-int	parse_av(char *filename);
-void verif_name(char *s);
-char *extracting_extension(char *s);
-int verif_extension(char *ext);
-
-//---------------init1.c-------------------//
-void init_game(t_game *game, char *s);
-void init_player(t_game *game);
-void init_textures(t_game *game);
-void init_colors(t_game *game);
-
 //---------------init_get_doc.c-------------------//
 char	**get_doc(char *filename);
 int 	init_ctx(char *filename, t_doc *ctx);
@@ -216,15 +204,175 @@ void process_line(t_doc *ctx);
 void cleaning_up(t_doc *ctx);
 void closing_fd(t_doc *ctx);
 
+//---------------init_load_textures.c-------------------//
+void	load_texture(t_game *game, t_texture *texture, char *path);
+void	load_textures(t_game *game);
+void	free_game(t_game *game);
+void	free_textures_ulimit(t_game *game);
+void	free_textures(t_game *game);
+
+//---------------init1.c-------------------//
+void init_game(t_game *game, char *s);
+void init_player(t_game *game);
+void init_textures(t_game *game);
+void init_colors(t_game *game);
+void init_layout(t_game *game, char *s);
+
+//---------------init2.c-------------------//
+void	init_player_pos(t_game *game);
+void	init_mlx(t_game *game);
+void	init_colors_int(t_game *game);
+int		rgb_tab_to_int(int tab[3]);
+
+//---------------manage_close.c-------------------//
+int	key_press(int keycode, t_game *game);
+int	key_release(int keycode, t_game *game);
+void	manage_close(t_game *game);
+int	ft_close(t_game *game);
+
+//---------------move_player.c-------------------//
+void	init_movement(t_movement *movement);
+void	handle_forward_backward_movement(t_game *game, t_movement *movement);
+void	move_forward_backward(t_game *game, t_movement *movement, int direction);
+int	is_near_wall(t_game *game, double new_x, double new_y);
+void	draw_floor_and_ceiling(t_game *game);
+
+//---------------move_player2.c-------------------//
+void	handle_left_right_movement(t_game *game, t_movement *movement);
+void	move_left_right(t_game *game, t_movement *movement, int direction);
+void	handle_rotation(t_game *game, t_movement *movement);
+void	rotate_player(t_game *game, t_movement *movement, int direction);
+void	put_pixel(t_img *img, int x, int y, int color);
+
+//---------------p_color.c-------------------//
+void	handle_color_directive(t_game *game, t_parser_context *ctx, char *line);
+void parse_color(char *s,  int color[3], t_game *game);
+int	parse_color_line(char *s);
+
+//---------------p_color_utils.c-------------------//
+long my_strtol(const char *str, char **endptr, int base);
+void	skip_whitespace(const char **str):
+int	get_sign(const char **str);
+int	determine_base(const char **str, int base);
+long	parse_digits(const char **str, int base, int sign, char **endptr);
+
+//---------------p_color_utils2.c-------------------//
+int	get_digit_value(char c);
+int	is_valid_digit(int digit, int base);
+long	update_result(t_parse_state *state, int base, int sign, char **endptr);
+void	free_wrong_color(t_game *game);
+void	protect_wrong_color(char **ptr, t_game *game);
+
+//---------------p_config_utils.c-------------------//
+char	*parse_doc_line(char *s);
+void	handle_texture_directive(t_game *game, t_parser_context *ctx,
+		char *line);
+void	free_game_texture(tgame game, char *msg);
+
+//---------------p_config.c-------------------//
+void parsing_configuration(t_game *game, char **doc);
+void init_parser_context(t_parser_context *ctx);
+void parse_textures(t_game *game, char **doc, t_parser_context *ctx);
+void	validate_textures(t_game *game, int x);
+void	allocate_map(t_game *game, char **doc, int start_map, int map_size);
+
+//---------------p_config2.c-------------------//
+int	find_map_start(char **doc, int i);
+int	found_end_of_the_map(char **doc);
+int	tablen(char **tab);
+int	calculate_map_size(char **doc, int start_map, int end_map);
+int	no_empty_line(char **doc, int i, int is_map);
+
+//---------------p_doc.c-------------------//
+int	validate_identifier(char *line);
+int	parse_doc(char **doc, int start_map);
+void	exit_properly_parsing(t_game *game);
+
+//---------------p_player.c-------------------//
+void	process_spawn_tile(char **map, int i, int j, t_spawn_ctx *ctx);
+void	process_tile(char **map, int i, int j, t_spawn_ctx *ctx);
+void	check_multiple_spawns(int *d_flag, t_game *dt);
+void	player_spawn(char **map, t_game *dt);
+
+//---------------p_player2.c-------------------//
+void	check_spawn_validity(char **map, int i, int j, t_game *dt);
+void	carry_on(char **map, int i, int j, t_game *dt);
+void	last_check_spawn(char **map, int i, int *j, t_game *dt);
+void	set_player_position(char **map, int i, int j, t_game *dt);
+
+//---------------p_textures.c-------------------//
+void	assign_texture(t_game *game, t_parser_context *ctx, char c, char *doc);
+void	assign_north_texture(t_game *game, char *doc);
+void	assign_south_texture(t_game *game, char *doc);
+void	assign_west_texture(t_game *game, char *doc);
+void	assign_east_texture(t_game *game, char *doc);
+
+//---------------p_validate_utils.c-------------------//
+bool	valid_texture(t_game *game);
+void	parse_texture(t_game *game);
+bool	ends_with_xpm(char *path);
+int	check_texture_path(const char *path);
+
+//---------------p_wall.c-------------------//
+char **parse_wall(char **map, t_game *game);
+int	found_max_width(char **map);
+char	**check_top_border(char **map);
+char	**check_bottom_border(char **map, int map_height);
+char	**check_bottom_border(char **map, int map_height);
+
+//---------------p_wall2.c-------------------//
+char	**check_first_border(char **map);
+void	check_null_line(char *line, int i);
+int	check_right_border(char *line, int map_width, int i);
+int	check_zero_surroundings(char **map, int i, int j, int map_height);
+char	**check_inner_lines(char **map, int map_height);
+
+//---------------p_wall3.c-------------------//
+int	ft_strlen_skip_empty_line(char *map);
+void	free_game_wall(t_game *game);
+char	**check_first_char(char **map, int map_height);
+
+//---------------p_wall4.c-------------------//
+int	is_valid_tile(char c);
+int	check_up_tile(char **map, int c, int l);
+int	check_down_tile(char **map, int c, int l, int map_height);
+char	**check_map_validity(char **map, int map_height, int max_width);
+
+//---------------p_wall5.c-------------------//
+int	is_above_cell_valid(char **map, int c, int l);
+int	is_below_cell_valid(char **map, int c, int l, int map_height);
+int	is_cell_valid(char **map, int c, int l, int map_height);
+char	**check_map(char **map, int map_height, int max_width);
+
+//---------------parsing1.c-------------------//
+int	parse_av(char *filename);
+void verif_name(char *s);
+char *extracting_extension(char *s);
+int verif_extension(char *ext);
+
+//---------------raycast.c-------------------//
+void	raycast(t_game *game);
+void	init_raycast(t_raycast *rc, t_game *game, int x);
+void	calculate_x_step_and_side_dist(t_raycast *rc, t_game *game);
+void	calculate_y_step_and_side_dist(t_raycast *rc, t_game *game);
+void	calculate_step_and_side_dist(t_raycast *rc, t_game *game);
+
+//---------------raycast2.c-------------------//
+void	perform_dda(t_raycast *rc, t_game *game);
+void	calculate_wall_distance_and_draw_range(t_raycast *rc, t_game *game);
+void	select_texture_and_calculate_tex_coords(t_raycast *rc, t_game *game);
+void	draw_wall_column(t_raycast *rc, t_game *game, int x);
+void	draw_sky_and_floor_column(t_raycast *rc, t_game *game, int x);
+
+//---------------redraw.c-------------------//
+void	move_player(t_game *game);
+void	draw_floor_and_ceiling(t_game *game);
+void	raycast(t_game *game);
+int	redraw(t_game *game);
+
 //---------------verify_info.c-------------------//
 void verify_info(t_game *game);
 void free_game_texture(t_game *game, char *txt);
 void	free_tab(char **tab);
 
-
-
-/*void init_player(t_player *player);
-int key_release(int keycode, t_player *player);
-int key_press(int keycode, t_player *player);
-void move_player(t_player *player);*/
 #endif
